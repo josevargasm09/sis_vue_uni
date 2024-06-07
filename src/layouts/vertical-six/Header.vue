@@ -9,14 +9,11 @@
       flat
       height="75"
     >
-      <v-app-bar-nav-icon
-        v-ripple="{ class: 'primary--text' }"
-        @click="toggleVerticalSidebarDrawer"
-      />
+  
       <vue-navigation-bar class="mt-0" :options="navbarOptions" />
       <v-progress-linear
         :active="getThemeMode.isLoading"
-        :indeterminate="getThemeMode.isLoading"
+        :indeterminate="getThemeMode.isLoading" 
         absolute
         bottom
         color="primary"
@@ -26,29 +23,12 @@
 
       <v-spacer />
 
-      <v-badge
-        bordered
-        overlap
-        content="3"
-        color="red"
-        offset-x="22"
-        offset-y="22"
-      >
-        <v-btn icon @click="notificationDrawer = !notificationDrawer">
-          <v-icon>mdi-bell</v-icon>
-        </v-btn>
-      </v-badge>
-
-      <v-btn icon @click="searchDrawer = !searchDrawer">
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
       <v-chip
         pill
         class="transparent rounded-pill py-6"
         @click="userDrawer = !userDrawer"
       >
-        Hi, Watson
+      {{ currentUser.username }}
         <v-avatar class="ml-2">
           <v-img src="@/assets/images/faces/1.jpg"></v-img>
         </v-avatar>
@@ -74,66 +54,17 @@
 
       <template v-slot:append>
         <div class="my-4 mx-4">
+          <!-- Cerrar sesión -->
           <base-hover-button
-            @click.native="logoutUser"
-            text="Logout"
+           
+             @click.native="logOut"
+            text="Cerrar sesión"
             block
             bg-color="primary lighten-5 primary--text"
             icon-name="mdi-logout"
           />
         </div>
       </template>
-    </v-navigation-drawer>
-
-    <!-- notificationDrawer  -->
-    <v-navigation-drawer
-      v-model="notificationDrawer"
-      fixed
-      right
-      height="100%"
-      temporary
-      floating
-      width="350"
-    >
-      <notification-drawer>
-        <template v-slot:notificationDrawerCloseButton>
-          <v-btn
-            icon
-            color
-            @click.stop="notificationDrawer = !notificationDrawer"
-          >
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </template>
-      </notification-drawer>
-
-      <template v-slot:append>
-        <div class="my-4 mx-4">
-          <base-hover-button
-            text="View All Notifications"
-            block
-            bg-color="primary lighten-5 primary--text"
-          />
-        </div>
-      </template>
-    </v-navigation-drawer>
-    <!-- searchDrawer -->
-    <v-navigation-drawer
-      v-model="searchDrawer"
-      fixed
-      right
-      height="100%"
-      temporary
-      floating
-      width="380"
-    >
-      <search-drawer>
-        <template v-slot:searchDrawerCloseButton>
-          <v-btn icon color @click.stop="searchDrawer = !searchDrawer">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </template>
-      </search-drawer>
     </v-navigation-drawer>
   </div>
 </template>
@@ -148,8 +79,13 @@ export default {
     NotificationDrawer: () => import("../common-drawer/NotificationDrawer.vue"),
     SearchDrawer: () => import("../common-drawer/SearchDrawer.vue"),
   },
+  // muestra nombre de usuario en el appbar
   computed: {
     ...mapGetters(["getThemeMode"]),
+
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
   },
   data() {
     return {
@@ -168,50 +104,7 @@ export default {
         ariaLabelMainNav: "Main Navigation",
         tooltipAnimationType: "shift-away",
         menuOptionsLeft: [
-          {
-            type: "link",
-            text: "Dashboard",
-            iconLeft: '<i class="mdi mdi-view-dashboard"></i>',
-            subMenuOptions: [
-              {
-                type: "link",
-                text: "Learning Management",
-                path: { name: "learning-management" },
-                iconLeft: '<i class="mdi mdi-circle-medium"></i>',
-              },
-
-              {
-                type: "link",
-                text: "Job Management",
-                path: { name: "job-management" },
-                iconLeft: '<i class="mdi mdi-circle-medium"></i>',
-              },
-              {
-                type: "link",
-                text: "Analytic",
-                path: { name: "analytic" },
-                iconLeft: '<i class="mdi mdi-circle-medium"></i>',
-              },
-              {
-                type: "link",
-                text: "Cryptocurrency",
-                path: { name: "crypto-currency" },
-                iconLeft: '<i class="mdi mdi-circle-medium"></i>',
-              },
-              {
-                type: "link",
-                text: "Sales",
-                path: { name: "sales" },
-                iconLeft: '<i class="mdi mdi-circle-medium"></i>',
-              },
-              {
-                type: "link",
-                text: "Subscription",
-                path: { name: "donation" },
-                iconLeft: '<i class="mdi mdi-circle-medium"></i>',
-              },
-            ],
-          },
+  
         ],
       },
     };
@@ -229,8 +122,12 @@ export default {
       // this.$emit("update:mini-variant");
       // console.log("check");
     },
-    logoutUser() {
-      this.signOut();
+
+    // Funcion cerrar sesion 
+
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      // this.signOut();
 
       this.$router.push("/app/sessions/login");
     },

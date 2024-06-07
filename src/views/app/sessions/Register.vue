@@ -151,7 +151,11 @@ export default {
 
   mounted() {
     if (this.loggedIn) {
-      this.$router.push('');
+      this.$router.push('/app/sessions/register').catch(err => {
+      if (err.name !== 'NavigationDuplicated') {
+        throw err;
+      }
+    });;
     }
   },
 

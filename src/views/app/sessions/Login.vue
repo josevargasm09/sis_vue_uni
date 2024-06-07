@@ -15,7 +15,7 @@
                     </v-avatar>
 
                     <h6 class="text--disabled font-weight-medium mb-10">
-                        Sign in to your account
+                        Iniciar Sesion
                     </h6>
                     <form name="form" @submit.prevent="handleLogin">
                             <div v-if="!successful">
@@ -119,7 +119,7 @@ loggedIn() {
         console.log("pasaa1");
     if (this.loggedIn ) {
         console.log("pasaa2");
-      this.$router.push('');
+      this.$router.push('/app/dashboard/analytic');
     }
   },
       computed: {
@@ -158,7 +158,7 @@ loggedIn() {
         if (this.user.username && this.user.password) {
           this.$store.dispatch('auth/login', this.user).then(
             () => {
-              this.$router.push('');
+              this.$router.push('/app/dashboard/analytic');
             },
             error => {
               this.loading = false;
