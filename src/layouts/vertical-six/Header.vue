@@ -1,13 +1,14 @@
 <template>
   <div>
     <v-sheet class="header-backup"></v-sheet>
+    <!-- CAMBIAR TAAMAÑO DE ANCHO  HEADER -->
     <v-app-bar
       :color="$vuetify.theme.dark ? 'dark' : getThemeMode.appBarColor"
       :dark="getThemeMode.appBarColor != 'white' ? true : false"
       app
       class="px-sm text-left shadow-sm ma-4 rounded-lg"
       flat
-      height="75"
+      height="75"   
     >
   
       <vue-navigation-bar class="mt-0" :options="navbarOptions" />
@@ -26,7 +27,7 @@
       <v-chip
         pill
         class="transparent rounded-pill py-6"
-        @click="userDrawer = !userDrawer"
+        @click="username = !username"
       >
       {{ currentUser.username }}
         <v-avatar class="ml-2">
@@ -36,17 +37,17 @@
     </v-app-bar>
     <!-- userDrawer -->
     <v-navigation-drawer
-      v-model="userDrawer"
+      v-model="username"
       fixed
       right
-      height="100%"
+      height="30%"
       temporary
       floating
       width="350"
     >
       <user-drawer>
-        <template v-slot:userDrawerCloseButton>
-          <v-btn icon color @click.stop="userDrawer = !userDrawer">
+        <template v-slot:usernameCloseButton>
+          <v-btn icon color @click.stop="username = !username">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </template>
@@ -89,7 +90,7 @@ export default {
   },
   data() {
     return {
-      userDrawer: false,
+      username: false,
       notificationDrawer: false,
       searchDrawer: false,
       navbarOptions: {

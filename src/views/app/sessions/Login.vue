@@ -34,7 +34,7 @@
                                 <v-text-field for="email"  name="email" v-model="user.email"  :rules="emailRules"   v-validate="'required|email|max:50'"  label="Email" required outlined type="text"/>  -->
                                     <!-- <label for="email">Email </label>
                                     <input v-model="user.email" 
-                                    v-validate="'required|email|max:50'" 
+                                    v-validate="'required|email|max:50'"  
                                     type="email" 
                                     class="form-control"
                                     name="email" /> -->

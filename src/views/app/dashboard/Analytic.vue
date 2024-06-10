@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <!-- <div class="container">
     <header class="jumbotron">
       <h3>
         <strong>{{currentUser.username}}</strong> Profile
@@ -24,7 +24,7 @@
     <ul>
       <li v-for="(role,index) in currentUser.roles" :key="index">{{role}}</li>
     </ul>
-  </div>
+  </div> -->
 </template>
 <script>
 import analyticOneCard from "@/components/card/AnalyticCardVersionOne";

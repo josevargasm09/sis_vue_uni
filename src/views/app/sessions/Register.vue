@@ -20,7 +20,7 @@
                          REGISTRAR UNA CUENTA
                     </h6>
                      <form name="form" @submit.prevent="handleRegister">
-                            <div v-if="!successful">
+                            <div v-if="!successful"> 
                               <div class="form-group">
                                 <v-text-field for="username" name="username" v-model="user.username" :rules="usernameRules"  label="Username" required outlined type="text"/> 
                                 <!-- <input v-model="user.username" 
@@ -28,7 +28,7 @@
                                     type="text" class="form-control"
                                     name="username" /> -->
                                 <div v-if="submitted && 
-                                    errors.has('username')" 
+                                    errors.has('username')"  
                                     class="alert-danger">{{ 
                                     errors.first('username') }}</div>
                               </div>

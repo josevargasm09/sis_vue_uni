@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn
+    <!-- <v-btn
       v-if="!getThemeMode.disableCustomizer"
       class="mr-4 mb-4"
       color="primary"
@@ -14,7 +14,7 @@
       @click.stop="customizer = !customizer"
     >
       <v-icon>mdi-spin mdi-cog</v-icon>
-    </v-btn>
+    </v-btn> -->
     <v-navigation-drawer
       hide-overlay
       v-model="customizer"

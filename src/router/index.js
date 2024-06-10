@@ -106,6 +106,36 @@ const router = new Router({
               component: () => import("@/views/app/dashboard/Donation"),
             },
           ],
+        }, 
+        {
+          path: "/app/user",
+          component: () => import("@/views/app/user/Index"),
+          children: [
+            {
+              path: "AddTutorial",
+              name: "AddTutorial",
+              meta: {
+                // breadcrumb: [{ name: "AddTutorial" }, { name: "Table One" }],
+              },
+              component: () => import("@/views/app/user/AddTutorial"),
+            },
+            {
+              path: "tableTwo",
+              name: "tableTwo",
+              meta: {
+                breadcrumb: [{ name: "Customtable" }, { name: "Table One" }],
+              },
+              component: () => import("@/views/app/customTable/TableTwo"),
+            },
+            // {
+            //   path: "tableThree",
+            //   name: "tableThree",
+            //   meta: {
+            //     breadcrumb: [{ name: "Customtable" }, { name: "Table Three" }],
+            //   },
+            //   component: () => import("@/views/app/customTable/TableThree"),
+            // },
+          ],
         },
         {
           path: "/app/customTable",

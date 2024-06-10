@@ -693,28 +693,28 @@ export const items = [
       },
     ],
   },
-  {
-    title: "Custom Datatable",
-    iconTwo: "mdi-table-large",
-    group: "customTable",
-    children: [
-      {
-        title: "Table Ver One",
+  // {
+  //   title: "Custom Datatable",
+  //   iconTwo: "mdi-table-large",
+  //   group: "customTable",
+  //   children: [
+  //     {
+  //       title: "Table Ver One",
 
-        to: "tableOne",
-      },
-      {
-        title: "Table Ver Two",
+  //       to: "tableOne",
+  //     },
+  //     {
+  //       title: "Table Ver Two",
 
-        to: "tableTwo",
-      },
-      {
-        title: "Table Ver Three",
+  //       to: "tableTwo",
+  //     },
+  //     {
+  //       title: "Table Ver Three",
 
-        to: "tableThree",
-      },
-    ],
-  },
+  //       to: "tableThree",
+  //     },
+  //   ],
+  // },
 
   {
     title: "Sessions",

@@ -76,15 +76,16 @@ export const items = [
       },
     ],
   },
-  {
-    title: "Custom Datatable",
+
+  { 
+    title: "SEGURIDAD",
     icon: "mdi-table-large",
-    group: "customTable",
+    group: "seguridad",
     children: [
       {
-        title: "Table Ver One",
+        title: "USUARIOS",
 
-        to: "tableOne",
+        to: "AddTutorial",
         icon: "mdi-circle-medium",
       },
       {
@@ -101,6 +102,31 @@ export const items = [
       },
     ],
   },
+  // { 
+  //   title: "Custom Datatable",
+  //   icon: "mdi-table-large",
+  //   group: "customTable",
+  //   children: [
+  //     {
+  //       title: "Table Ver One",
+
+  //       to: "tableOne",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Table Ver Two",
+
+  //       to: "tableTwo",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Table Ver Three",
+
+  //       to: "tableThree",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
   {
     title: "Charts",
     icon: "mdi-chart-bar-stacked",

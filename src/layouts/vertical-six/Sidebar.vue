@@ -35,12 +35,12 @@
             "
           >
             <div class="flex-1">
-              <p class="subtitle-1 mb-0 text-capitalize">Octavia Inc</p>
+              <p class="subtitle-1 mb-0 text-capitalize">SISTEMA VENTAS</p>
               <p class="text-subtitle-2 mb-0 grey--text text--lighten-1">
-                Your tier: Premium
+                <!-- Your tier: Premium -->
               </p>
             </div>
-            <v-icon right>mdi-chevron-down</v-icon>
+            <!-- <v-icon right>mdi-chevron-down</v-icon> -->
           </div>
         </template>
 
@@ -68,7 +68,7 @@
             :key="`group-${i}`"
             :item="item"
           >
-            <!--  -->
+       
           </base-item-group-two>
 
           <base-item-two
@@ -81,12 +81,12 @@
       <v-divider></v-divider>
       <div class="mx-6 my-4 white--text">
         <p class="subtitle-1 mb-0 text-capitalize">Octavia Inc</p>
-        <p class="text-subtitle-2 mb-0 grey--text">Your tier: Premium</p>
+        <!-- <p class="text-subtitle-2 mb-0 grey--text">Your tier: Premium</p> -->
       </div>
       <div class="px-6 mb-6">
-        <v-btn block class="text-capitalize" color="primary">
+        <!-- <v-btn block class="text-capitalize" color="primary">
           Documentation
-        </v-btn>
+        </v-btn> -->
       </div>
     </vue-perfect-scrollbar>
   </v-navigation-drawer>

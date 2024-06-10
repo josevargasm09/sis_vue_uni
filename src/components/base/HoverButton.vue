@@ -9,12 +9,12 @@
     :color="color"
     :depressed="depressed"
   >
-    <v-icon
+    <!-- <v-icon
       :small="smallIcon"
       v-if="iconName"
       class="transition-none"
       :class="[iconMr]"
-    >{{ iconName }}</v-icon>
+    >{{ iconName }}</v-icon> -->
     {{ text }}
   </v-btn>
 </template>
