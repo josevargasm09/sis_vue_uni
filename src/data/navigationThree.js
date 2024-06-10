@@ -1,35 +1,35 @@
 export const items = [
-  {
-    divider: "Dashboards",
-    title: "Learning Management",
-    icon: "mdi-view-dashboard",
-    to: "learning-management",
-  },
-  {
-    title: "Job Management",
-    icon: "mdi-account-network",
-    to: "job-management",
-  },
-  {
-    title: "Sales",
-    icon: "mdi-sale",
-    to: "sales",
-  },
-  {
-    title: "Analytic",
-    icon: "mdi-google-analytics",
-    to: "analytic",
-  },
-  {
-    title: "Crypto Currency",
-    icon: "mdi-bitcoin",
-    to: "crypto-currency",
-  },
-  {
-    title: "Donation",
-    icon: "mdi-gift-open",
-    to: "donation",
-  },
+  // {
+  //   divider: "Dashboards",
+  //   title: "Learning Management",
+  //   icon: "mdi-view-dashboard",
+  //   to: "learning-management",
+  // },
+  // {
+  //   title: "Job Management",
+  //   icon: "mdi-account-network",
+  //   to: "job-management",
+  // },
+  // {
+  //   title: "Sales",
+  //   icon: "mdi-sale",
+  //   to: "sales",
+  // },
+  // {
+  //   title: "Analytic",
+  //   icon: "mdi-google-analytics",
+  //   to: "analytic",
+  // },
+  // {
+  //   title: "Crypto Currency",
+  //   icon: "mdi-bitcoin",
+  //   to: "crypto-currency",
+  // },
+  // {
+  //   title: "Donation",
+  //   icon: "mdi-gift-open",
+  //   to: "donation",
+  // },
 
   //   {
   //     subheader: "Apps",
@@ -38,10 +38,10 @@ export const items = [
   //   },
 
   {
-    title: "Apps",
+    title: "COMPRAS",
     icon: "mdi-apps-box",
     group: "apps",
-    divider: "custom",
+    divider: "Modulos",
     children: [
       {
         title: "Chat",
@@ -85,7 +85,7 @@ export const items = [
       {
         title: "USUARIOS",
 
-        to: "AddTutorial",
+        to: "IndexUser",
         icon: "mdi-circle-medium",
       },
       {
@@ -128,7 +128,7 @@ export const items = [
   //   ],
   // },
   {
-    title: "Charts",
+    title: "VENTAS",
     icon: "mdi-chart-bar-stacked",
     group: "charts",
     children: [
@@ -189,10 +189,10 @@ export const items = [
     ],
   },
   {
-    title: "Account",
+    title: "MANTENIMIENTO",
     icon: "mdi-account",
     group: "account",
-    divider: "Pages",
+    // divider: "Pages",
     children: [
       {
         title: "Data",
@@ -227,7 +227,7 @@ export const items = [
     ],
   },
   {
-    title: "Faq ",
+    title: "REPORTES ",
     icon: "mdi-chat-question",
     group: "faq",
     children: [
@@ -248,117 +248,117 @@ export const items = [
       },
     ],
   },
-  {
-    title: "Widgets",
-    icon: "mdi-chart-bar-stacked",
-    group: "widgets",
-    children: [
-      {
-        title: "General",
-        to: "general",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "widgets Charts",
-        to: "widgetsCharts",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "widgets Table",
-        to: "widgetsTable",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
+  // {
+  //   title: "Widgets",
+  //   icon: "mdi-chart-bar-stacked",
+  //   group: "widgets",
+  //   children: [
+  //     {
+  //       title: "General",
+  //       to: "general",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "widgets Charts",
+  //       to: "widgetsCharts",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "widgets Table",
+  //       to: "widgetsTable",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
 
-  {
-    title: "List",
-    icon: "mdi-format-list-checkbox",
-    group: "list",
-    children: [
-      {
-        title: "List Column",
-        to: "list-column",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "List Column Two",
-        to: "list-column-two",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "List Column Three",
-        to: "list-column-three",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "List Column Row",
-        to: "list-column-row",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
-  {
-    title: "Profile",
-    icon: "mdi-face-man",
-    group: "profile",
-    children: [
-      {
-        title: "Profile Ver 1",
-        to: "profile-one",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Profile Ver 2",
-        to: "profile-two",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
-  {
-    title: "Pricing",
-    icon: "mdi-file-table-box",
-    group: "pricing",
-    children: [
-      {
-        title: "Pricing Ver 1",
-        to: "pricing-ver-one",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Pricing Ver 2",
-        to: "pricing-ver-two",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Pricing Ver 3",
-        to: "pricing-ver-three",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
-  {
-    title: "Invoice",
-    icon: "mdi-file-pdf-box",
-    group: "Invoice",
-    children: [
-      {
-        title: "Invoice ver 1",
-        to: "invoice-ver-one",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Invoice ver 2",
-        to: "invoice-ver-two",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Edit Invoice",
-        to: "edit-invoice",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
+  // {
+  //   title: "List",
+  //   icon: "mdi-format-list-checkbox",
+  //   group: "list",
+  //   children: [
+  //     {
+  //       title: "List Column",
+  //       to: "list-column",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "List Column Two",
+  //       to: "list-column-two",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "List Column Three",
+  //       to: "list-column-three",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "List Column Row",
+  //       to: "list-column-row",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Profile",
+  //   icon: "mdi-face-man",
+  //   group: "profile",
+  //   children: [
+  //     {
+  //       title: "Profile Ver 1",
+  //       to: "profile-one",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Profile Ver 2",
+  //       to: "profile-two",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Pricing",
+  //   icon: "mdi-file-table-box",
+  //   group: "pricing",
+  //   children: [
+  //     {
+  //       title: "Pricing Ver 1",
+  //       to: "pricing-ver-one",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Pricing Ver 2",
+  //       to: "pricing-ver-two",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Pricing Ver 3",
+  //       to: "pricing-ver-three",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Invoice",
+  //   icon: "mdi-file-pdf-box",
+  //   group: "Invoice",
+  //   children: [
+  //     {
+  //       title: "Invoice ver 1",
+  //       to: "invoice-ver-one",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Invoice ver 2",
+  //       to: "invoice-ver-two",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Edit Invoice",
+  //       to: "edit-invoice",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
   // {
   //   title: "Pages",
   //   icon: "mdi-book-open-page-variant",
@@ -554,331 +554,331 @@ export const items = [
   //     },
   //   ],
   // },
-  {
-    title: "Ecommerce",
-    icon: "mdi-cart",
-    group: "ecommerce",
-    children: [
-      {
-        title: "Product List",
+  // {
+  //   title: "Ecommerce",
+  //   icon: "mdi-cart",
+  //   group: "ecommerce",
+  //   children: [
+  //     {
+  //       title: "Product List",
 
-        to: "ecommerce-product-list",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Product Details",
+  //       to: "ecommerce-product-list",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Product Details",
 
-        to: "ecommerce-product-details",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Product Checkout",
+  //       to: "ecommerce-product-details",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Product Checkout",
 
-        to: "ecommerce-product-checkout",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
-  {
-    title: "Basic Kits",
-    icon: "mdi-diamond-stone",
-    group: "uiKits",
-    divider: "components",
-    children: [
-      {
-        title: "Button",
+  //       to: "ecommerce-product-checkout",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Basic Kits",
+  //   icon: "mdi-diamond-stone",
+  //   group: "uiKits",
+  //   divider: "components",
+  //   children: [
+  //     {
+  //       title: "Button",
 
-        to: "button",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Avatar",
+  //       to: "button",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Avatar",
 
-        to: "avatar",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Alerts",
+  //       to: "avatar",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Alerts",
 
-        to: "alerts",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Accordion",
+  //       to: "alerts",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Accordion",
 
-        to: "accordion",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Badge",
+  //       to: "accordion",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Badge",
 
-        to: "badge",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Chips",
+  //       to: "badge",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Chips",
 
-        to: "chips",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Snackbar",
+  //       to: "chips",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Snackbar",
 
-        to: "snackbar",
-        icon: "mdi-circle-medium",
-      },
-      // {
-      //   title: 'Sparklines',
-      //   icon: 'mdi-circle-medium',
-      //   to: 'sparklines'
-      // },
-      {
-        title: "Stepper",
+  //       to: "snackbar",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     // {
+  //     //   title: 'Sparklines',
+  //     //   icon: 'mdi-circle-medium',
+  //     //   to: 'sparklines'
+  //     // },
+  //     {
+  //       title: "Stepper",
 
-        to: "stepper",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
-  {
-    title: "Advance Kits",
-    icon: "mdi-dice-5",
-    group: "extraUiKits",
-    children: [
-      {
-        title: "Cards",
+  //       to: "stepper",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Advance Kits",
+  //   icon: "mdi-dice-5",
+  //   group: "extraUiKits",
+  //   children: [
+  //     {
+  //       title: "Cards",
 
-        to: "cards",
-        icon: "mdi-circle-medium",
-      },
+  //       to: "cards",
+  //       icon: "mdi-circle-medium",
+  //     },
 
-      {
-        title: "Calendars",
+  //     {
+  //       title: "Calendars",
 
-        to: "calendars",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Circular",
+  //       to: "calendars",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Circular",
 
-        to: "circular",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Linear",
+  //       to: "circular",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Linear",
 
-        to: "linear",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Pagination",
+  //       to: "linear",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Pagination",
 
-        to: "paginations",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "List",
+  //       to: "paginations",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "List",
 
-        to: "list",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Bottom Navigation",
+  //       to: "list",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Bottom Navigation",
 
-        to: "bottom-navigation",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Bottom Sheets",
+  //       to: "bottom-navigation",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Bottom Sheets",
 
-        to: "bottom-sheets",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Ratings",
+  //       to: "bottom-sheets",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Ratings",
 
-        to: "ratings",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Tabs",
+  //       to: "ratings",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Tabs",
 
-        to: "tabs",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
-  {
-    title: "Forms",
-    icon: "mdi-help-box",
-    group: "forms",
-    children: [
-      {
-        title: "Combobox",
+  //       to: "tabs",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Forms",
+  //   icon: "mdi-help-box",
+  //   group: "forms",
+  //   children: [
+  //     {
+  //       title: "Combobox",
 
-        to: "combobox",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "validation",
+  //       to: "combobox",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "validation",
 
-        to: "validation",
-        icon: "mdi-circle-medium",
-      },
-      // {
-      //   title: 'Inputs',
-      //   icon: 'mdi-circle-medium',
-      //   to: 'inputs',
-      // },
-      {
-        title: "Overflow Buttons",
+  //       to: "validation",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     // {
+  //     //   title: 'Inputs',
+  //     //   icon: 'mdi-circle-medium',
+  //     //   to: 'inputs',
+  //     // },
+  //     {
+  //       title: "Overflow Buttons",
 
-        to: "overflow-buttons",
-        icon: "mdi-circle-medium",
-      },
+  //       to: "overflow-buttons",
+  //       icon: "mdi-circle-medium",
+  //     },
 
-      {
-        title: "Selects",
+  //     {
+  //       title: "Selects",
 
-        to: "selects",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Selection Controls",
+  //       to: "selects",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Selection Controls",
 
-        to: "selection-controls",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Sliders",
+  //       to: "selection-controls",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Sliders",
 
-        to: "sliders",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Textarea",
+  //       to: "sliders",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Textarea",
 
-        to: "textarea",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Textfields",
+  //       to: "textarea",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Textfields",
 
-        to: "textfields",
-        icon: "mdi-circle-medium",
-      },
+  //       to: "textfields",
+  //       icon: "mdi-circle-medium",
+  //     },
 
-      {
-        title: "DatePicker",
+  //     {
+  //       title: "DatePicker",
 
-        to: "datepicker",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "TimePicker",
+  //       to: "datepicker",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "TimePicker",
 
-        to: "timepicker",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
-  {
-    title: "Datatables",
-    icon: "mdi-table",
-    group: "tables",
-    children: [
-      {
-        title: "Data Iterators",
+  //       to: "timepicker",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Datatables",
+  //   icon: "mdi-table",
+  //   group: "tables",
+  //   children: [
+  //     {
+  //       title: "Data Iterators",
 
-        to: "dataIterators",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Simple Tables",
+  //       to: "dataIterators",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Simple Tables",
 
-        to: "simpleTables",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Data Tables",
+  //       to: "simpleTables",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Data Tables",
 
-        to: "dataTables",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
+  //       to: "dataTables",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
 
-  {
-    title: "Sessions",
-    icon: "mdi-logout-variant",
-    group: "sessions",
-    children: [
-      {
-        title: "Sign In",
+  // {
+  //   title: "Sessions",
+  //   icon: "mdi-logout-variant",
+  //   group: "sessions",
+  //   children: [
+  //     {
+  //       title: "Sign In",
 
-        to: "sign-in",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Error",
+  //       to: "sign-in",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Error",
 
-        to: "error",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Forgot",
+  //       to: "error",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Forgot",
 
-        to: "forgot",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Lockscreen",
+  //       to: "forgot",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Lockscreen",
 
-        to: "lockscreen",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Login",
+  //       to: "lockscreen",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "Login",
 
-        to: "login",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "SignIn ver 3",
+  //       to: "login",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "SignIn ver 3",
 
-        to: "sign-in-three",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "SignIn ver 4",
+  //       to: "sign-in-three",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "SignIn ver 4",
 
-        to: "sign-in-four",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "SignIn ver 5",
+  //       to: "sign-in-four",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "SignIn ver 5",
 
-        to: "sign-in-five",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "SignUp",
+  //       to: "sign-in-five",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "SignUp",
 
-        to: "sign-up",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "SignUp Ver 2",
+  //       to: "sign-up",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "SignUp Ver 2",
 
-        to: "sign-up-2",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "SignUp Ver 5",
+  //       to: "sign-up-2",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //     {
+  //       title: "SignUp Ver 5",
 
-        to: "sign-up-5",
-        icon: "mdi-circle-medium",
-      },
-    ],
-  },
+  //       to: "sign-up-5",
+  //       icon: "mdi-circle-medium",
+  //     },
+  //   ],
+  // },
 ];

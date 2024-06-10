@@ -68,6 +68,7 @@
   </v-row>
 </template>
 <script>
+import axios from 'axios';
 export default {
   metaInfo: {
     title: "Datatable",
@@ -169,16 +170,23 @@ export default {
       this.selectedRow = row;
       // this.rowSelected
     },
+    
     fetchData() {
       console.log("entro search",this.search);
       this.loading = true;
       this.updateParams();
-      axios.get(this.path, {
+    
+      axios.get("/user", {
+        
         params: {
+          
                     ...this.serverParams,
           },
+          
       })
+      
         .then(response => {
+          console.log("Fetching data with search:", this.serverParams.search);
           console.log( response.data,"if");
           let res = response.data;
           this.loading = false;

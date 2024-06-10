@@ -18,7 +18,7 @@ class TutorialDataService {
   update(id, data) {
     return http.put(`/tutorials/${id}`, data ,  { headers: authHeader() });
   }
-
+ 
   delete(id) {
     return http.delete(`/tutorials/${id}` , { headers: authHeader() });
   }
