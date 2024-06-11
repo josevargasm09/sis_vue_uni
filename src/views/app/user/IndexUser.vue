@@ -4,9 +4,9 @@
         <base-card>
           <v-card-title>
             <div class="d-flex justify-space-between flex-wrap">
-              <v-btn class="ma-2" dark color="danger">
+              <v-btn class="ma-2" dark color="danger" @click="openFormModal">
                 <v-icon>mdi-plus</v-icon>
-                Add Customer
+                Agregar Usuario 
               </v-btn>
               <div>
                 <v-btn class="ma-2" color="primary">
@@ -18,7 +18,7 @@
             </div>
           </v-card-title>
           <v-card-title>
-            Customers
+            Usuarios
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -33,17 +33,14 @@
             :search="search"
             :headers="headers"
             :items="users"
-            item-key="name"
+            item-key="username"
             show-select
             class="elevation-1 table-one"
             multi-sort
           >
-            <template v-slot:item.name="{ item }">
+            <template v-slot:item.username="{ item }">
               <div class="d-flex align-center">
-                <v-avatar class="mr-2" size="26" dark>
-                  <img :src="item.img" alt="" />
-                </v-avatar>
-                <p class="ma-0 font-weight-medium">{{ item.name }}</p>
+                <p class="ma-0 font-weight-medium">{{ item.username }}</p>
               </div>
             </template>
             <template v-slot:item.action="{ item }">
@@ -82,6 +79,8 @@
             </template>
           </v-data-table>
         </base-card>
+        <!-- Form Modal -->
+        <UserFormModal ref="userFormModal" @updateList="fetchUsers"/>
       </v-col>
     </v-row>
   </template>
@@ -89,47 +88,46 @@
   <script>
   import UserService from '../services/user.service.js'
   import axios from 'axios';
-//   import IndexUser from './user/IndexUser.vue';
-import authHeader from '../services/auth-header.js';
-import { mapState } from 'vuex';
+  import authHeader from '../services/auth-header.js';
+  import UserFormModal from './UserFormModal.vue'; // Import the form modal component
   
   export default {
     data() {
-    return {
-      search: '',
-      users: [],
-      selected: [],
-      headers: [
-        { text: 'Name', value: 'name' },
-        { text: 'Email', value: 'email' },
-        { text: 'Actions', value: 'action', sortable: false },
-        // Otros encabezados según sea necesario
-      ]
-    };
-  },
-//   computed: {
-//     ...mapState({
-//       token: state => state.auth.token /
-//     })
-//   },
-  created() {
-    this.fetchUsers();
-  },
-  methods: {
-    fetchUsers() {
-      axios.get('http://localhost:8080/api/test/users', {
-        
-            headers: authHeader()   
-      })
-      .then(response => {
-        this.users = response.data;
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error);
-      });
+      return {
+        search: '',
+        users: [],
+        selected: [],
+        headers: [
+          { text: 'Name', value: 'username' },
+          { text: 'Email', value: 'email' },
+          { text: 'Actions', value: 'action', sortable: false },
+          // Otros encabezados según sea necesario
+        ]
+      };
+    },
+    created() {
+      this.fetchUsers();
+    },
+    methods: {
+      fetchUsers() {
+        axios.get('http://localhost:8080/api/test/users', {
+          headers: authHeader()   
+        })
+        .then(response => {
+          this.users = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching users:', error);
+        });
+      },
+      openFormModal() {
+        this.$refs.userFormModal.open();
+      }
+    },
+    components: {
+      UserFormModal // Register the form modal component
     }
-  }
-};
+  };
   </script>
   
   <style scoped>

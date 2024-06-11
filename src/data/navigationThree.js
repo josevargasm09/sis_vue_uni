@@ -83,15 +83,15 @@ export const items = [
     group: "seguridad",
     children: [
       {
-        title: "USUARIOS",
+        title: "Usuarios",
 
         to: "IndexUser",
         icon: "mdi-circle-medium",
       },
       {
-        title: "Table Ver Two",
+        title: "Roles",
 
-        to: "tableTwo",
+        to: "IndexRole",
         icon: "mdi-circle-medium",
       },
       {

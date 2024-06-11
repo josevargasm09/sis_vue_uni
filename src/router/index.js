@@ -120,12 +120,12 @@ const router = new Router({
               component: () => import("@/views/app/user/IndexUser"),
             },
             {
-              path: "tableTwo",
-              name: "tableTwo",
+              path: "IndexRole",
+              name: "IndexRole",
               meta: {
-                breadcrumb: [{ name: "Customtable" }, { name: "Table One" }],
+                // breadcrumb: [{ name: "Customtable" }, { name: "Table One" }],
               },
-              component: () => import("@/views/app/customTable/TableTwo"),
+              component: () => import("@/views/app/role/IndexRole"),
             },
             // {
             //   path: "tableThree",
