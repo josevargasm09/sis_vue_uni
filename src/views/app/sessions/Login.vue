@@ -121,7 +121,7 @@ loggedIn() {
         console.log("pasaa2");
       this.$router.push('/app/dashboard/analytic');
     }
-  },
+  }, 
       computed: {
         
     

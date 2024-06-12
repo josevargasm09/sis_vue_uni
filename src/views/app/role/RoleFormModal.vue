@@ -6,7 +6,7 @@
     <v-card>
       <v-card-title class="text-h6 pa-0 pl-3 grey lighten-2">
         <p class="mb-0 text-capitalize secondary--text text-sm font-weight-semibold">
-          Usuario
+          {{ isEdit ? 'Editar Rol' : 'Agregar Rol' }}
         </p>
         <v-spacer></v-spacer>
         <v-btn icon x-small dark @click="dialog = false" class="ma-1 secondary--text">
@@ -15,161 +15,102 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-row dense>
-          <v-col cols="12" md="12" sm="12">
-            <v-text-field
-              hide-details
-              label="Usuario"
-              outlined
-              class="pa-1 black-border"
-              dense
-              v-model="form.username"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="12" sm="12">
-            <v-text-field
-              class="pa-1"
-              hide-details
-              label="Email"
-              outlined
-              dense
-              v-model="form.email"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="12" sm="12">
-            <v-text-field
-              class="pa-1"
-              hide-details
-              outlined
-              dense
-              v-model="form.password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rulesTwo.required, rulesTwo.min]"
-              :type="show1 ? 'text' : 'password'"
-              name="input-10-1"
-              label="Contraseña"
-              hint="At least 8 characters"
-              counter
-              @click:append="show1 = !show1"
-            />
-          </v-col>
-          <v-col cols="12" md="12" sm="12">
-            <v-text-field
-              class="pa-1"
-              hide-details
-              outlined
-              dense
-              v-model="form.remember_password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rulesTwo.required, rulesTwo.min]"
-              :type="show1 ? 'text' : 'password'"
-              name="input-10-1"
-              label="Repetir Contraseña"
-              hint="At least 8 characters"
-              counter
-              @click:append="show1 = !show1"
-            />
-          </v-col>
-          <v-col cols="12" md="12" sm="12">
-            <v-select
-              v-model="form.profile_id"
-              class="pa-1"
-              :items="profiles"
-              hide-details
-              label="Perfil"
-              outlined
-              menu-props="offset-y"
-              dense
-              item-text="description"
-              item-value="id"
-            ></v-select>
-          </v-col>
-        </v-row>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row dense>
+            <v-col cols="12" md="12" sm="12">
+              <v-text-field
+                hide-details
+                label="Nombre del Rol"
+                outlined
+                class="pa-1 black-border"
+                dense
+                v-model="form.name"
+                :rules="[rules.required]"
+                error-messages="nameErrors"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="error" @click="dialog = false">
-          Cerrar
-        </v-btn>
-        <v-btn color="primary" @click="registerUser">
-          Guardar
-        </v-btn>
+        <v-btn color="primary" @click="saveRole">{{ isEdit ? 'Guardar Cambios' : 'Agregar Rol' }}</v-btn>
+        <v-btn color="error" @click="dialog = false">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import axios from 'axios';
-import Vue from 'vue';
+import RoleService from '../services/role.service.js';
 
 const initFormData = {
-  id: '-1',
-  username: '',
-  email: '',
-  password: '',
-  remember_password: '',
-  profile_id: null,
+  id: null,
+  name: ''
 };
 
 export default {
   data() {
     return {
-      form: Object.assign({}, initFormData),
-      profiles: [],
-      show1: false,
       dialog: false,
-      rulesTwo: {
-        required: (value) => !!value || 'Required.',
-        min: (v) => v.length >= 8 || 'Min 8 characters',
-        emailMatch: () => "The email and password you entered don't match",
-      },
+      isEdit: false,
+      form: Object.assign({}, initFormData),
+      valid: true,
+      nameErrors: '',
+      rules: {
+        required: value => !!value || 'Requerido.'
+      }
     };
   },
-  mounted() {
-    this.init();
-  },
   methods: {
-    resetForm() {
-      Vue.set(this.$data, 'form', Object.assign({}, initFormData));
-    },
-    registerUser() {
-      axios.post('auth/register', this.form)
-        .then(response => {
-          this.$emit('updateList');
-          this.dialog = false;
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-    init() {
-      axios.get('/api/profile/get/')
-        .then(response => {
-          let res = response.data;
-          this.profiles = res.profile;
-          this.addOptionSelected(res.profile);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-    addOptionSelected(data) {
-      let option_selected = {
-        id: null,
-        description: "::Seleccionar::",
-      };
-      data.unshift(option_selected);
-    },
-    open() {
-      this.resetForm();
+    open(role) {
+      if (role) {
+        this.isEdit = true;
+        this.form = { ...role };
+      } else {
+        this.isEdit = false;
+        this.resetForm();
+      }
       this.dialog = true;
     },
-  },
+    resetForm() {
+      this.form = Object.assign({}, initFormData);
+    },
+    saveRole() {
+      if (this.$refs.form.validate()) {
+        const roleData = {
+          name: this.form.name
+        };
+
+        if (this.isEdit) {
+          RoleService.updateRole(this.form.id, roleData)
+            .then(() => {
+              this.$emit('updateList');
+              this.dialog = false;
+            })
+            .catch(error => {
+              console.error('Error updating role:', error);
+            });
+        } else {
+          RoleService.createRole(roleData)
+            .then(() => {
+              this.$emit('updateList');
+              this.dialog = false;
+            })
+            .catch(error => {
+              console.error('Error creating role:', error);
+            });
+        }
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
-::v-deep .my-custom-dialog {
-  align-self: flex-start;
+.pa-1 {
+  padding: 4px;
+}
+.black-border {
+  border: 1px solid black;
 }
 </style>

@@ -4,20 +4,24 @@ import authHeader from './auth-header';
 const API_URL = 'http://localhost:8080/api/test/';
 
 class UserService {
-  getPublicContent() {
-    return axios.get(API_URL + 'all');
+  getAllUsers() {
+    return axios.get(API_URL + 'users', { headers: authHeader() });
   }
 
-  getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+  createUser(user) {
+    return axios.post(API_URL + 'users', user, { headers: authHeader() });
   }
 
-  getModeratorBoard() {
-    return axios.get(API_URL + 'mod', { headers: authHeader() });
+  updateUser(id, user) {
+    return axios.put(API_URL + 'users/' + id, user, { headers: authHeader() });
   }
 
-  getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
+  deleteUser(id) {
+    return axios.delete(API_URL + 'users/' + id, { headers: authHeader() });
+  }
+
+  getAllRoles() {
+    return axios.get(API_URL.replace('/test', '/roles'), { headers: authHeader() });
   }
 }
 

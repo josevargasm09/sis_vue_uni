@@ -3,41 +3,78 @@
     <v-col cols="12">
       <base-card>
         <v-card-title>
-          Lista de Roles
+          <div class="d-flex justify-space-between flex-wrap">
+            <v-btn class="ma-2" dark color="danger" @click="openCreateDialog">
+              <v-icon>mdi-plus</v-icon>
+              Agregar Rol 
+            </v-btn>
+            <div>
+              <v-btn class="ma-2" color="primary">
+                <v-icon>mdi-cog</v-icon>
+              </v-btn>
+              <v-btn outlined class="ma-2">Import</v-btn>
+              <v-btn outlined class="ma-2">Export</v-btn>
+            </div>
+          </div>
+        </v-card-title>
+        <v-card-title>
+          Roles
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="openCreateDialog">Agregar Rol</v-btn>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Buscar"
+            single-line
+            hide-details
+          ></v-text-field>
         </v-card-title>
         <v-data-table
+          v-model="selected"
+          :search="search"
           :headers="headers"
           :items="roles"
-          item-key="id"
-          class="elevation-1"
+          item-key="name"
+          show-select
+          class="elevation-1 table-one"
+          multi-sort
         >
           <template v-slot:item.name="{ item }">
-            <v-chip>{{ item.name }}</v-chip>
+            <div class="d-flex align-center">
+              <p class="ma-0 font-weight-medium">{{ item.name }}</p>
+            </div>
           </template>
           <template v-slot:item.action="{ item }">
-            <v-btn icon @click="openEditDialog(item)">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon @click="deleteRole(item.id)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            <div class="d-flex">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="success" dark v-bind="attrs" v-on="on" icon @click="openEditDialog(item)">
+                    <v-icon>mdi-pencil-box-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span>Editar</span>
+              </v-tooltip>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="danger" dark v-bind="attrs" v-on="on" icon @click="openDeleteDialog(item)">
+                    <v-icon>mdi-trash-can-outline</v-icon>
+                  </v-btn>
+                </template>
+                <span>Eliminar</span>
+              </v-tooltip>
+            </div>
           </template>
         </v-data-table>
       </base-card>
-
-      <v-dialog v-model="dialog" max-width="500px">
+      <!-- Form Modal -->
+      <RoleFormModal ref="roleFormModal" @updateList="fetchRoles"/>
+      <!-- Confirm Delete Modal -->
+      <v-dialog v-model="deleteDialog" max-width="500px">
         <v-card>
-          <v-card-title>
-            {{ isEdit ? 'Editar Rol' : 'Agregar Rol' }}
-          </v-card-title>
-          <v-card-text>
-            <v-text-field v-model="role.name" label="Nombre del Rol"></v-text-field>
-          </v-card-text>
+          <v-card-title class="headline">Confirmar Eliminación</v-card-title>
+          <v-card-text>¿Estás seguro de que deseas eliminar este rol?</v-card-text>
           <v-card-actions>
-            <!-- <v-btn color="primary" @click="saveRole">{{ isEdit ? 'Guardar Cambios' : 'Agregar Rol' }}</v-btn>
-            <v-btn color="error" @click="closeDialog">Cancelar</v-btn> -->
+            <v-btn color="error" @click="deleteDialog = false">Cancelar</v-btn>
+            <v-btn color="primary" @click="confirmDeleteRole">Eliminar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -46,85 +83,62 @@
 </template>
 
 <script>
-// import RoleService from '../services/role.service.js';
+
+import RoleFormModal from './RoleFormModal.vue';
+import RoleService from '../services/role.service.js';
 
 export default {
   data() {
     return {
+      search: '',
       roles: [],
+      selected: [],
       headers: [
-        { text: 'ID', value: 'id' },
-        { text: 'Nombre', value: 'name' },
-        { text: 'Acciones', value: 'action', sortable: false },
+        { text: 'Name', value: 'name' },
+        { text: 'Actions', value: 'action', sortable: false },
+        // Otros encabezados según sea necesario
       ],
-      dialog: false,
-      isEdit: false,
-      role: {
-        id: null,
-        name: '',
-      },
+      deleteDialog: false,
+      roleToDelete: null
     };
   },
-  // created() {
-  //   this.fetchRoles();
-  // },
+  created() {
+    this.fetchRoles();
+  },
   methods: {
-    // fetchRoles() {
-    //   RoleService.getAllRoles()
-    //     .then(response => {
-    //       this.roles = response.data;
-    //     })
-    //     .catch(error => {
-    //       console.error('Error fetching roles:', error);
-    //     });
-    // },
+    fetchRoles() {
+      RoleService.getAllRoles()
+        .then(response => {
+          this.roles = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching roles:', error);
+        });
+    },
     openCreateDialog() {
-      this.resetRole();
-      this.isEdit = false;
-      this.dialog = true;
+      this.$refs.roleFormModal.open();
     },
     openEditDialog(role) {
-      this.role = { ...role };
-      this.isEdit = true;
-      this.dialog = true;
+      this.$refs.roleFormModal.open(role);
     },
-    // saveRole() {
-    //   if (this.isEdit) {
-    //     RoleService.updateRole(this.role.id, this.role)
-    //       .then(() => {
-    //         this.fetchRoles();
-    //         this.closeDialog();
-    //       })
-    //       .catch(error => {
-    //         console.error('Error updating role:', error);
-    //       });
-    //   } else {
-    //     RoleService.createRole(this.role)
-    //       .then(() => {
-    //         this.fetchRoles();
-    //         this.closeDialog();
-    //       })
-    //       .catch(error => {
-    //         console.error('Error creating role:', error);
-    //       });
-    //   }
-    // },
-    // deleteRole(id) {
-    //   RoleService.deleteRole(id)
-    //     .then(() => {
-    //       this.fetchRoles();
-    //     })
-    //     .catch(error => {
-    //       console.error('Error deleting role:', error);
-    //     });
-    // },
-    // closeDialog() {
-    //   this.dialog = false;
-    // },
-    // resetRole() {
-    //   this.role = { id: null, name: '' };
-    // },
+    openDeleteDialog(role) {
+      this.roleToDelete = role;
+      this.deleteDialog = true;
+    },
+    confirmDeleteRole() {
+      RoleService.deleteRole(this.roleToDelete.id)
+        .then(() => {
+          this.fetchRoles();
+          this.deleteDialog = false;
+        })
+        .catch(error => {
+          console.error('Error deleting role:', error);
+        });
+    }
   },
+  components: {
+    RoleFormModal
+  }
 };
 </script>
 

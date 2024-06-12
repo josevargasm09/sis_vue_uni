@@ -151,7 +151,7 @@ export default {
 
   mounted() {
     if (this.loggedIn) {
-      this.$router.push('/app/sessions/register').catch(err => {
+      this.$router.push('/app/sessions/login').catch(err => {
       if (err.name !== 'NavigationDuplicated') {
         throw err;
       }
@@ -181,7 +181,7 @@ export default {
         }
       });
     }
-  }
+  } 
 
     // methods: {
     //     ...mapActions(['signUserUp']),
