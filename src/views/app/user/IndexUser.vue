@@ -96,7 +96,6 @@ export default {
         { text: 'Name', value: 'username' },
         { text: 'Email', value: 'email' },
         { text: 'Actions', value: 'action', sortable: false },
-        // Otros encabezados según sea necesario
       ],
       deleteDialog: false,
       userToDelete: null
@@ -112,7 +111,11 @@ export default {
           this.users = response.data;
         })
         .catch(error => {
-          console.error('Error fetching users:', error);
+          if (error.response && error.response.status === 401) {
+            this.$router.push('/app/sessions/login');
+          } else {
+            console.error('Error fetching users:', error);
+          }
         });
     },
     openCreateDialog() {
@@ -132,7 +135,11 @@ export default {
           this.deleteDialog = false;
         })
         .catch(error => {
-          console.error('Error deleting user:', error);
+          if (error.response && error.response.status === 401) {
+            this.$router.push('/app/sessions/login');
+          } else {
+            console.error('Error deleting user:', error);
+          }
         });
     }
   },
@@ -140,6 +147,7 @@ export default {
     UserFormModal
   }
 };
+
 </script>
 
 <style scoped>
