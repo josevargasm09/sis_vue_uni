@@ -33,6 +33,16 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
   }
+
+  refreshToken() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.refreshToken) {
+      return axios.post(API_URL + 'refreshtoken', {
+        refreshToken: user.refreshToken,
+      });
+    }
+    return Promise.reject(new Error('No refresh token available'));
+  }
 }
 
 export default new AuthService();

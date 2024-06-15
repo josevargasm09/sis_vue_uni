@@ -9,13 +9,12 @@ class RoleService {
   }
 
   createRole(role) {
-    return axios.post(API_URL, role, { headers: authHeader() });
+    return axios.post(API_URL, role);
   }
 
   updateRole(id, role) {
-    return axios.put(API_URL + id, role, { headers: authHeader() });
+    return axios.put(`${API_URL}${id}`, role);
   }
-
   deleteRole(id) {
     return axios.delete(API_URL + id, { headers: authHeader() });
   }

@@ -6,15 +6,8 @@
           <div class="d-flex justify-space-between flex-wrap">
             <v-btn class="ma-2" dark color="danger" @click="openCreateDialog">
               <v-icon>mdi-plus</v-icon>
-              Agregar Rol 
+              Agregar Rol
             </v-btn>
-            <div>
-              <v-btn class="ma-2" color="primary">
-                <v-icon>mdi-cog</v-icon>
-              </v-btn>
-              <v-btn outlined class="ma-2">Import</v-btn>
-              <v-btn outlined class="ma-2">Export</v-btn>
-            </div>
           </div>
         </v-card-title>
         <v-card-title>
@@ -83,11 +76,13 @@
 </template>
 
 <script>
-
-import RoleFormModal from './RoleFormModal.vue';
 import RoleService from '../services/role.service.js';
+import RoleFormModal from './RoleFormModal.vue';
 
 export default {
+  components: {
+    RoleFormModal
+  },
   data() {
     return {
       search: '',
@@ -135,9 +130,6 @@ export default {
           console.error('Error deleting role:', error);
         });
     }
-  },
-  components: {
-    RoleFormModal
   }
 };
 </script>

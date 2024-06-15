@@ -133,7 +133,7 @@ export const items = [
     group: "charts",
     children: [
       {
-        title: "Area",
+        title: "Ventas",
 
         to: "ApexAreaChart",
         icon: "mdi-circle-medium",

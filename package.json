@@ -30,6 +30,7 @@
         "vue-navigation-bar": "^4.1.0",
         "vue-perfect-scrollbar": "^0.2.1",
         "vue-router": "^3.6.5",
+        "vue-toast-notification": "^0.6.2",
         "vuedraggable": "^2.24.3",
         "vueperslides": "^2.13.0",
         "vuetify": "^2.6.1",
