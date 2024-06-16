@@ -39,10 +39,19 @@ class AuthService {
     if (user && user.refreshToken) {
       return axios.post(API_URL + 'refreshtoken', {
         refreshToken: user.refreshToken,
+      }).then(response => {
+        if (response.data.accessToken) {
+          user.accessToken = response.data.accessToken;
+          localStorage.setItem('user', JSON.stringify(user));
+          return response.data;
+        } else {
+          return Promise.reject(new Error('No access token returned'));
+        }
       });
     }
     return Promise.reject(new Error('No refresh token available'));
   }
+  
 }
 
 export default new AuthService();

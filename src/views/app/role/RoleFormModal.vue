@@ -1,3 +1,4 @@
+<!-- src/views/app/role/RoleFormModal.vue -->
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <v-card>
@@ -65,18 +66,8 @@ export default {
       this.form = { ...initFormData };
     },
     saveRole() {
-      const validRoles = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MODERATOR'];
-      if (!validRoles.includes(this.form.name)) {
-        alert('El nombre del rol no es válido.');
-        return;
-      }
-
-      const roleData = {
-        name: this.form.name
-      };
-
       if (this.isEdit) {
-        RoleService.updateRole(this.form.id, roleData)
+        RoleService.updateRole(this.form.id, this.form)
           .then(() => {
             this.$emit('updateList');
             this.dialog = false;
@@ -85,7 +76,7 @@ export default {
             console.error('Error updating role:', error);
           });
       } else {
-        RoleService.createRole(roleData)
+        RoleService.createRole(this.form)
           .then(() => {
             this.$emit('updateList');
             this.dialog = false;
