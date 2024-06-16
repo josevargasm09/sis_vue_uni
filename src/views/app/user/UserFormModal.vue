@@ -1,8 +1,6 @@
+<!-- src/components/UserFormModal.vue -->
 <template>
-  <v-dialog
-    v-model="dialog"
-    max-width="500px"
-  >
+  <v-dialog v-model="dialog" max-width="500px">
     <v-card>
       <v-card-title class="text-h6 pa-0 pl-3 grey lighten-2">
         <p class="mb-0 text-capitalize secondary--text text-sm font-weight-semibold">
@@ -82,13 +80,19 @@
         <v-btn color="error" @click="dialog = false">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
+
+    <!-- Notification Snackbar -->
+    <NotificationSnackbar
+      :message="notification.message"
+      :color="notification.color"
+      v-if="notification.visible"
+    />
   </v-dialog>
 </template>
 
 <script>
-import axios from 'axios';
-import Vue from 'vue';
 import UserService from '../services/user.service.js';
+import NotificationSnackbar from '../../../components/NotificationSnackbar.vue';
 
 const initFormData = {
   id: null,
@@ -100,13 +104,22 @@ const initFormData = {
 };
 
 export default {
+  name: 'UserFormModal',
+  components: {
+    NotificationSnackbar
+  },
   data() {
     return {
       dialog: false,
       isEdit: false,
       showPassword: false,
       form: Object.assign({}, initFormData),
-      roles: []
+      roles: [],
+      notification: {
+        visible: false,
+        message: '',
+        color: 'success'
+      }
     };
   },
   created() {
@@ -140,20 +153,26 @@ export default {
       if (this.isEdit) {
         UserService.updateUser(this.form.id, user)
           .then(() => {
+            this.$store.dispatch('notification/showSnackbar', 
+              { message: 'Usuario actualizado correctamente', color: 'success' });
             this.$emit('updateList');
             this.dialog = false;
           })
           .catch(error => {
-            console.error('Error updating user:', error);
+            this.$store.dispatch('notification/showSnackbar', 
+              { message: `Error al actualizar usuario: ${error.message}`, color: 'error' });
           });
       } else {
         UserService.createUser(user)
           .then(() => {
+            this.$store.dispatch('notification/showSnackbar', 
+              { message: 'Usuario creado correctamente', color: 'success' });
             this.$emit('updateList');
             this.dialog = false;
           })
           .catch(error => {
-            console.error('Error creating user:', error);
+            this.$store.dispatch('notification/showSnackbar', 
+              { message: `Error al crear usuario: ${error.message}`, color: 'error' });
           });
       }
     },

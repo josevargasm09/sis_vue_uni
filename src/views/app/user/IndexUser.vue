@@ -1,24 +1,14 @@
+<!-- src/views/app/user/IndexUser.vue -->
 <template>
   <v-row>
     <v-col cols="12">
       <base-card>
         <v-card-title>
-          <div class="d-flex justify-space-between flex-wrap">
-            <v-btn class="ma-2" dark color="danger" @click="openCreateDialog">
-              <v-icon>mdi-plus</v-icon>
-              Agregar Usuario 
-            </v-btn>
-            <div>
-              <v-btn class="ma-2" color="primary">
-                <v-icon>mdi-cog</v-icon>
-              </v-btn>
-              <v-btn outlined class="ma-2">Import</v-btn>
-              <v-btn outlined class="ma-2">Export</v-btn>
-            </div>
-          </div>
+          Usuarios
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="openCreateDialog">Agregar usuario</v-btn>
         </v-card-title>
         <v-card-title>
-          Usuarios
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -66,7 +56,7 @@
         </v-data-table>
       </base-card>
       <!-- Form Modal -->
-      <UserFormModal ref="userFormModal" @updateList="fetchUsers"/>
+      <UserFormModal ref="userFormModal" @updateList="fetchUsers" />
       <!-- Confirm Delete Modal -->
       <v-dialog v-model="deleteDialog" max-width="500px">
         <v-card>
@@ -78,15 +68,27 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <!-- Notification Snackbar -->
+      <NotificationSnackbar
+        :message="notification.message"
+        :color="notification.color"
+        v-if="notification.visible"
+      />
     </v-col>
   </v-row>
 </template>
 
 <script>
-import UserService from '../services/user.service.js'
+import UserService from '../services/user.service.js';
 import UserFormModal from './UserFormModal.vue';
+import NotificationSnackbar from '../../../components/NotificationSnackbar.vue';
 
 export default {
+  components: {
+    UserFormModal,
+    NotificationSnackbar
+  },
   data() {
     return {
       search: '',
@@ -95,10 +97,15 @@ export default {
       headers: [
         { text: 'Name', value: 'username' },
         { text: 'Email', value: 'email' },
-        { text: 'Actions', value: 'action', sortable: false },
+        { text: 'Actions', value: 'action', sortable: false }
       ],
       deleteDialog: false,
-      userToDelete: null
+      userToDelete: null,
+      notification: {
+        visible: false,
+        message: '',
+        color: 'success'
+      }
     };
   },
   created() {
@@ -129,25 +136,34 @@ export default {
       this.deleteDialog = true;
     },
     confirmDeleteUser() {
-      UserService.deleteUser(this.userToDelete.id)
+      UserService.deleteUser(this.userToDelete.id) 
         .then(() => {
           this.fetchUsers();
           this.deleteDialog = false;
+          this.$store.dispatch('notification/showSnackbar', 
+        { message: 'Usuario eliminado correctamente', color: 'success' });
         })
         .catch(error => {
+          this.deleteDialog = false;
+          this.showNotification(`Error al eliminar usuario: ${error.message}`, 'error');
           if (error.response && error.response.status === 401) {
             this.$router.push('/app/sessions/login');
           } else {
             console.error('Error deleting user:', error);
           }
         });
+    },
+    showNotification(message, color) {
+      this.notification.message = message;
+      this.notification.color = color;
+      this.notification.visible = true;
+
+      setTimeout(() => {
+        this.notification.visible = false;
+      }, 3000);
     }
-  },
-  components: {
-    UserFormModal
   }
 };
-
 </script>
 
 <style scoped>

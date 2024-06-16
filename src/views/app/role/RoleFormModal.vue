@@ -1,4 +1,4 @@
-<!-- src/views/app/role/RoleFormModal.vue -->
+<!-- src/components/RoleFormModal.vue -->
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <v-card>
@@ -31,11 +31,19 @@
         <v-btn color="error" @click="dialog = false">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
+
+    <!-- Notification Snackbar -->
+    <NotificationSnackbar
+      :message="notification.message"
+      :color="notification.color"
+      v-if="notification.visible"
+    />
   </v-dialog>
 </template>
 
 <script>
 import RoleService from '../services/role.service.js';
+import NotificationSnackbar from '../../../components/NotificationSnackbar.vue';
 
 const initFormData = {
   id: null,
@@ -44,15 +52,25 @@ const initFormData = {
 
 export default {
   name: 'RoleFormModal',
+  components: {
+    NotificationSnackbar
+  },
   data() {
     return {
       dialog: false,
       isEdit: false,
-      form: { ...initFormData }
+      form: { ...initFormData },
+      notification: {
+        visible: false,
+        message: '',
+        color: 'success'
+      }
     };
   },
-  methods: {
-    open(role) {
+  // src/components/RoleFormModal.vue
+methods: {
+
+  open(role) {
       if (role) {
         this.isEdit = true;
         this.form = { ...role };
@@ -63,30 +81,40 @@ export default {
       this.dialog = true;
     },
     resetForm() {
-      this.form = { ...initFormData };
+      this.form = {
+        id: null,
+        name: ''
+      };
     },
-    saveRole() {
-      if (this.isEdit) {
-        RoleService.updateRole(this.form.id, this.form)
-          .then(() => {
-            this.$emit('updateList');
-            this.dialog = false;
-          })
-          .catch(error => {
-            console.error('Error updating role:', error);
-          });
-      } else {
-        RoleService.createRole(this.form)
-          .then(() => {
-            this.$emit('updateList');
-            this.dialog = false;
-          })
-          .catch(error => {
-            console.error('Error creating role:', error);
-          });
-      }
+  saveRole() {
+    if (this.isEdit) {
+      RoleService.updateRole(this.form.id, this.form)
+        .then(() => {
+          this.$store.dispatch('notification/showSnackbar', 
+          { message: 'Perfil actualizado correctamente', color: 'success' });
+          this.$emit('updateList');
+          this.dialog = false;
+        })
+        .catch(error => { 
+          this.$store.dispatch('notification/showSnackbar',
+           { message: `Error actualizar perfil: ${error.message}`, color: 'error' });
+        });
+    } else {
+      RoleService.createRole(this.form)
+        .then(() => {
+          this.$store.dispatch('notification/showSnackbar', 
+          { message: 'Perfil creado correctamente', color: 'success' });
+          this.$emit('updateList');
+          this.dialog = false;
+        })
+        .catch(error => {
+          this.$store.dispatch('notification/showSnackbar', 
+          { message: `Falló al crear perfil: ${error.message}`, color: 'error' });
+        });
     }
   }
+}
+
 };
 </script>
 

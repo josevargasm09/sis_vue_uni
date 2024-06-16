@@ -10,6 +10,7 @@ import cart from './modules/cart'
 import verticalSidebar from './modules/verticalSidebar' 
 import scrumboard from './modules/scrumboard'
 import { auth } from '../views/app/store/auth.module';
+import notification from './modules/notification.js';
 
 // Load Vuex
 Vue.use(Vuex)
@@ -28,5 +29,6 @@ export default new Vuex.Store({
     auth,
     verticalSidebar,
     scrumboard,
+    notification
   },
 })

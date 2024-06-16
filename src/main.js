@@ -20,7 +20,7 @@ Vue.component('apexchart', VueApexCharts);
 
 Vue.use(VeeValidate);
 Vue.use(octaviaKit);
-Vue.use(VueToast);  // <--- Agrega esto
+Vue.use(VueToast);  
 
 Vue.config.productionTip = false;
 

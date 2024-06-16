@@ -1,8 +1,13 @@
 <template>
-  <router-view />
+  <v-app>
+    <NotificationSnackbar />
+    <router-view />
+  </v-app>
 </template>
 
 <script>
+
+import NotificationSnackbar from './components/NotificationSnackbar.vue';
 export default {
   name: "App",
   metaInfo() {
@@ -13,6 +18,10 @@ export default {
       titleTemplate:
         "%s | Octavia Admin - Vuejs & VuetifyJs Admin Dashboard Template "
     };
+  },
+
+  components: {
+    NotificationSnackbar
   },
   methods: {
     getRouterParams() {
