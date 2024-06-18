@@ -135,13 +135,13 @@ export const items = [
       {
         title: "Ventas",
 
-        to: "ApexAreaChart",
+        to: "IndexSale",
         icon: "mdi-circle-medium",
       },
       {
-        title: "Bar",
+        title: "Clientes",
 
-        to: "ApexBarChart",
+        to: "IndexClient",
         icon: "mdi-circle-medium",
       },
       {
@@ -195,18 +195,18 @@ export const items = [
     // divider: "Pages",
     children: [
       {
-        title: "Data",
-        to: "AccountData",
+        title: "Categorias",
+        to: "IndexCategory",
         icon: "mdi-circle-medium",
       },
       {
-        title: "Home",
-        to: "AccountHome",
+        title: "Sucursales",
+        to: "IndexBranch",
         icon: "mdi-circle-medium",
       },
       {
-        title: "Payment",
-        to: "AccountPayment",
+        title: "Marcas",
+        to: "IndexMarca",
         icon: "mdi-circle-medium",
       },
       {

@@ -1,157 +1,139 @@
 <template>
-  <v-row>
-    <v-col cols="12">
-      <base-card>
-        <v-card-title>
-          <div class="d-flex justify-space-between flex-wrap">
-            <v-btn class="ma-2" dark color="danger" @click="openCreateDialog">
-              <v-icon>mdi-plus</v-icon>
-              Agregar Usuario 
-            </v-btn>
-            <div>
-              <v-btn class="ma-2" color="primary">
-                <v-icon>mdi-cog</v-icon>
-              </v-btn>
-              <v-btn outlined class="ma-2">Import</v-btn>
-              <v-btn outlined class="ma-2">Export</v-btn>
-            </div>
-          </div>
-        </v-card-title>
-        <v-card-title>
-          Usuarios
-          <v-spacer></v-spacer>
+  <v-container fluid>
+    <v-row>
+      <v-col>
+        <base-card>
+          <v-card-title>
+            Ventas
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="openCreateSaleDialog">Registrar Venta</v-btn>
+          </v-card-title>
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
-            label="Buscar"
-            single-line
-            hide-details
+            label="Buscar venta"
+            class="mx-4"
+            solo
           ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          v-model="selected"
-          :search="search"
-          :headers="headers"
-          :items="users"
-          item-key="username"
-          show-select
-          class="elevation-1 table-one"
-          multi-sort
-        >
-          <template v-slot:item.username="{ item }">
-            <div class="d-flex align-center">
-              <p class="ma-0 font-weight-medium">{{ item.username }}</p>
-            </div>
-          </template>
-          <template v-slot:item.action="{ item }">
-            <div class="d-flex">
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="success" dark v-bind="attrs" v-on="on" icon @click="openEditDialog(item)">
-                    <v-icon>mdi-pencil-box-outline</v-icon>
-                  </v-btn>
-                </template>
-                <span>Editar</span>
-              </v-tooltip>
-              <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="danger" dark v-bind="attrs" v-on="on" icon @click="openDeleteDialog(item)">
-                    <v-icon>mdi-trash-can-outline</v-icon>
-                  </v-btn>
-                </template>
-                <span>Eliminar</span>
-              </v-tooltip>
-            </div>
-          </template>
-        </v-data-table>
-      </base-card>
-      <!-- Form Modal -->
-      <UserFormModal ref="userFormModal" @updateList="fetchUsers"/>
-      <!-- Confirm Delete Modal -->
-      <v-dialog v-model="deleteDialog" max-width="500px">
-        <v-card>
-          <v-card-title class="headline">Confirmar Eliminación</v-card-title>
-          <v-card-text>¿Estás seguro de que deseas eliminar este usuario?</v-card-text>
-          <v-card-actions>
-            <v-btn color="error" @click="deleteDialog = false">Cancelar</v-btn>
-            <v-btn color="primary" @click="confirmDeleteUser">Eliminar</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-col>
-  </v-row>
+          <v-data-table
+            :headers="headers"
+            :items="sales"
+            :search="search"
+            item-key="id"
+            class="elevation-1"
+          >
+            <template v-slot:item.action="{ item }">
+              <v-btn icon @click="openEditSaleDialog(item)">
+                <v-icon color="primary">mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn icon @click="openDeleteSaleDialog(item)">
+                <v-icon color="red">mdi-delete</v-icon>
+              </v-btn>
+            </template>
+          </v-data-table>
+        </base-card>
+      </v-col>
+    </v-row>
+    <!-- Modal para registrar/editar venta -->
+    <SaleFormModal
+      v-model="saleModalVisible"
+      :sale="selectedSale"
+      @close="fetchSales"
+    />
+
+    <!-- Confirmación para eliminar venta -->
+    <v-dialog v-model="deleteDialogVisible" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Confirmar Eliminación</v-card-title>
+        <v-card-text>¿Estás seguro de que deseas eliminar esta venta?</v-card-text>
+        <v-card-actions>
+          <v-btn color="error" @click="deleteDialogVisible = false">Cancelar</v-btn>
+          <v-btn color="primary" @click="confirmDeleteSale">Eliminar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
-import UserService from '../services/user.service.js'
-import UserFormModal from './SaleFormModal.vue';
+import SaleFormModal from './SaleFormModal.vue';
+import SaleService from '../services/sale.service.js';
 
 export default {
+  components: {
+    SaleFormModal
+  },
   data() {
     return {
       search: '',
-      users: [],
-      selected: [],
+      sales: [],
       headers: [
-        { text: 'Name', value: 'username' },
-        { text: 'Email', value: 'email' },
-        { text: 'Actions', value: 'action', sortable: false },
+        { text: 'ID', value: 'id' },
+        { text: 'Cliente', value: 'clientName' },
+        { text: 'Fecha', value: 'date' },
+        { text: 'Total', value: 'total' },
+        { text: 'Acciones', value: 'action', sortable: false }
       ],
-      deleteDialog: false,
-      userToDelete: null
+      saleModalVisible: false,
+      selectedSale: null,
+      deleteDialogVisible: false,
+      saleToDelete: null
     };
   },
   created() {
-    this.fetchUsers();
+    this.fetchSales();
   },
   methods: {
-    fetchUsers() {
-      UserService.getAllUsers()
+    fetchSales() {
+      SaleService.getAllSales()
         .then(response => {
-          this.users = response.data;
+          this.sales = response.data.map(sale => ({
+            ...sale,
+            clientName: sale.client.name, // Mapea el nombre del cliente para mostrar
+            total: sale.total.toFixed(2) // Formatea el total
+          }));
         })
         .catch(error => {
-          if (error.response && error.response.status === 401) {
-            this.$router.push('/app/sessions/login');
-          } else {
-            console.error('Error fetching users:', error);
-          }
+          console.error('Error fetching sales:', error);
         });
     },
-    openCreateDialog() {
-      this.$refs.userFormModal.open();
+    openCreateSaleDialog() {
+      this.selectedSale = null;
+      this.saleModalVisible = true;
     },
-    openEditDialog(user) {
-      this.$refs.userFormModal.open(user);
+    openEditSaleDialog(sale) {
+      this.selectedSale = sale;
+      this.saleModalVisible = true;
     },
-    openDeleteDialog(user) {
-      this.userToDelete = user;
-      this.deleteDialog = true;
+    openDeleteSaleDialog(sale) {
+      this.saleToDelete = sale;
+      this.deleteDialogVisible = true;
     },
-    confirmDeleteUser() {
-      UserService.deleteUser(this.userToDelete.id)
+    confirmDeleteSale() {
+      SaleService.deleteSale(this.saleToDelete.id)
         .then(() => {
-          this.fetchUsers();
-          this.deleteDialog = false;
+          this.fetchSales();
+          this.deleteDialogVisible = false;
+          this.$store.dispatch('notification/showSnackbar', {
+            message: 'Venta eliminada correctamente',
+            color: 'success'
+          });
         })
         .catch(error => {
-          if (error.response && error.response.status === 401) {
-            this.$router.push('/app/sessions/login');
-          } else {
-            console.error('Error deleting user:', error);
-          }
+          console.error('Error deleting sale:', error);
+          this.$store.dispatch('notification/showSnackbar', {
+            message: `Error al eliminar la venta: ${error.message}`,
+            color: 'error'
+          });
         });
     }
-  },
-  components: {
-    UserFormModal
   }
 };
-
 </script>
 
 <style scoped>
-.table-one {
-  width: 100%;
+.mx-4 {
+  margin-left: 16px;
+  margin-right: 16px;
 }
 </style>

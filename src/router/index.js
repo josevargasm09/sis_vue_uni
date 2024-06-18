@@ -269,33 +269,33 @@ const router = new Router({
           ],
         },
         {
-          path: "/app/charts",
-          component: () => import("@/views/app/charts/Index"),
+          path: "/app/sale",
+          component: () => import("@/views/app/sale/Index"),
 
           children: [
             {
-              path: "ApexAreaChart",
-              name: "ApexAreaChart",
+              path: "IndexSale",
+              name: "IndexSale",
               meta: {
-                breadcrumb: [
-                  { name: "Charts" },
-                  { name: "ApexCharts" },
-                  { name: "ApexAreaChart" },
-                ],
+                // breadcrumb: [
+                //   { name: "Charts" },
+                //   { name: "ApexCharts" },
+                //   { name: "ApexAreaChart" },
+                // ],
               },
-              component: () => import("@/views/app/charts/ApexAreaChart"),
+              component: () => import("@/views/app/sale/IndexSale"),
             },
             {
-              path: "ApexBarChart",
-              name: "ApexBarChart",
+              path: "IndexClient",
+              name: "IndexClient",
               meta: {
-                breadcrumb: [
-                  { name: "Charts" },
-                  { name: "ApexCharts" },
-                  { name: "ApexBarChart" },
-                ],
+                // breadcrumb: [
+                //   { name: "Charts" },
+                //   { name: "ApexCharts" },
+                //   { name: "ApexBarChart" },
+                // ],
               },
-              component: () => import("@/views/app/charts/ApexBarChart"),
+              component: () => import("@/views/app/client/IndexClient"),
             },
             {
               path: "ApexLineChart",
@@ -396,18 +396,18 @@ const router = new Router({
           ],
         },
         {
-          path: "/app/account",
-          component: () => import("@/views/app/account/Index.vue"),
+          path: "/app/category",
+          component: () => import("@/views/app/category/Index.vue"),
           children: [
             {
-              path: "AccountData",
-              name: "AccountData",
-              component: () => import("@/views/app/account/AccountData"),
+              path: "IndexCategory",
+              name: "IndexCategory",
+              component: () => import("@/views/app/category/IndexCategory"),
             },
             {
-              path: "AccountHome",
-              name: "AccountHome",
-              component: () => import("@/views/app/account/AccountHome"),
+              path: "IndexBranch",
+              name: "IndexBranch",
+              component: () => import("@/views/app/branch/IndexBranch"),
             },
             {
               path: "AccountPayment",
