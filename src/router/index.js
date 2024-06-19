@@ -310,16 +310,16 @@ const router = new Router({
               component: () => import("@/views/app/charts/ApexLineChart"),
             },
             {
-              path: "ApexMixChart",
-              name: "ApexMixChart",
+              path: "IndexCaja",
+              name: "IndexCaja",
               meta: {
-                breadcrumb: [
-                  { name: "Charts" },
-                  { name: "ApexCharts" },
-                  { name: "ApexMixChart" },
-                ],
+                // breadcrumb: [
+                //   { name: "Charts" },
+                //   { name: "ApexCharts" },
+                //   { name: "ApexMixChart" },
+                // ],
               },
-              component: () => import("@/views/app/charts/ApexMixChart"),
+              component: () => import("@/views/app/caja/IndexCaja"),
             },
             {
               path: "ApexColumnChart",
@@ -410,9 +410,9 @@ const router = new Router({
               component: () => import("@/views/app/branch/IndexBranch"),
             },
             {
-              path: "AccountPayment",
-              name: "AccountPayment",
-              component: () => import("@/views/app/account/AccountPayment"),
+              path: "IndexBrand",
+              name: "IndexBrand",
+              component: () => import("@/views/app/brand/IndexBrand"),
             },
             {
               path: "AccountPeople",
@@ -454,20 +454,20 @@ const router = new Router({
           ],
         },
         {
-          path: "/app/widgets",
-          component: () => import("@/views/app/widgets/Widgets"),
+          path: "/app/warehouse",
+          component: () => import("@/views/app/warehouse/Index.vue"),
           children: [
             {
-              path: "general",
-              name: "general",
+              path: "IndexWarehouse",
+              name: "IndexWarehouse",
               meta: {
-                breadcrumb: [
-                  { name: "pages" },
-                  { name: "Widgets" },
-                  { name: "general" },
-                ],
+                // breadcrumb: [
+                //   { name: "pages" },
+                //   { name: "Widgets" },
+                //   { name: "general" },
+                // ],
               },
-              component: () => import("@/views/app/widgets/General"),
+              component: () => import("@/views/app/warehouse/IndexWarehouse"),
             },
             {
               path: "widgetsCharts",

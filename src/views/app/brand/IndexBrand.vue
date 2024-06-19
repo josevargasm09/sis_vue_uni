@@ -4,24 +4,25 @@
       <v-col>
         <v-card>
           <v-card-title>
-            Clientes
+            Marcas
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="openCreateDialog">Agregar Cliente</v-btn>
+            <v-btn color="primary" @click="openCreateDialog">Agregar Marca</v-btn>
+          </v-card-title>
+          <v-card-title>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+            ></v-text-field>
           </v-card-title>
           <v-card-text>
-            <v-text-field
-              v-model="clientQuery"
-              label="Buscar Cliente (Nombre o DNI)"
-              outlined
-              dense
-              prepend-inner-icon="mdi-magnify"
-              @input="searchClient"
-            ></v-text-field>
             <v-data-table
               :headers="headers"
-              :items="clients"
+              :items="filteredBrands"
               item-key="id"
-              class="elevation-1"
             >
               <template v-slot:item.action="{ item }">
                 <div class="d-flex">
@@ -48,15 +49,16 @@
         </v-card>
       </v-col>
     </v-row>
-    <ClientFormModal ref="clientFormModal" @updateList="fetchClients" />
-    <!-- Confirm Delete Modal -->
+
+    <BrandFormModal ref="brandFormModal" @updateList="fetchBrands" />
+    
     <v-dialog v-model="deleteDialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Confirmar Eliminación</v-card-title>
-        <v-card-text>¿Estás seguro de que deseas eliminar este cliente?</v-card-text>
+        <v-card-text>¿Estás seguro de que deseas eliminar esta marca?</v-card-text>
         <v-card-actions>
           <v-btn color="error" @click="deleteDialog = false">Cancelar</v-btn>
-          <v-btn color="primary" @click="confirmDeleteClient">Eliminar</v-btn>
+          <v-btn color="primary" @click="confirmDeleteBrand">Eliminar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -71,30 +73,26 @@
 </template>
 
 <script>
-import ClientService from '../services/client.service.js';
-import ClientFormModal from './ClientFormModal.vue';
+import BrandService from '../services/brand.service.js';
+import BrandFormModal from './BrandFormModal.vue';
 import NotificationSnackbar from '../../../components/NotificationSnackbar.vue';
 
 export default {
   components: {
-    ClientFormModal,
+    BrandFormModal,
     NotificationSnackbar
   },
   data() {
     return {
-      clientQuery: '',
-      clients: [],
+      search: '',
+      brands: [],
+      deleteDialog: false,
+      brandToDelete: null,
       headers: [
         { text: 'ID', value: 'id' },
         { text: 'Nombre', value: 'name' },
-        { text: 'DNI', value: 'dni' },
-        { text: 'Dirección', value: 'address' },
-        { text: 'Email', value: 'email' },
-        { text: 'Teléfono', value: 'phone' },
         { text: 'Acciones', value: 'action', sortable: false }
       ],
-      deleteDialog: false,
-      clientToDelete: null,
       notification: {
         visible: false,
         message: '',
@@ -103,65 +101,70 @@ export default {
     };
   },
   created() {
-    this.fetchClients();
+    this.fetchBrands();
   },
   methods: {
-    fetchClients() {
-      ClientService.getAllClients().then(response => {
-        this.clients = response.data;
-      }).catch(error => {
-        this.showNotification(`Error al obtener clientes: ${error.message}`, 'error');
-        console.error('Error fetching clients:', error);
-      });
+    fetchBrands() {
+      BrandService.getAllBrands()
+        .then(response => {
+          this.brands = response.data;
+        })
+        .catch(error => {
+          if (error.response && error.response.status === 401) {
+            this.$router.push('/app/sessions/login');
+          } else {
+            console.error('Error fetching brands:', error);
+          }
+        });
     },
     openCreateDialog() {
-      this.$refs.clientFormModal.open();
+      this.$refs.brandFormModal.open();
     },
-    openEditDialog(client) {
-      this.$refs.clientFormModal.open(client);
+    openEditDialog(brand) {
+      this.$refs.brandFormModal.open(brand);
     },
-    openDeleteDialog(client) {
-      this.clientToDelete = client;
+    openDeleteDialog(brand) {
+      this.brandToDelete = brand;
       this.deleteDialog = true;
     },
-    confirmDeleteClient() {
-      ClientService.deleteClient(this.clientToDelete.id).then(() => {
-        this.fetchClients();
-        this.deleteDialog = false;
-        this.showNotification('Cliente eliminado correctamente', 'success');
-      }).catch(error => {
-        this.deleteDialog = false;
-        this.showNotification(`Error al eliminar cliente: ${error.message}`, 'error');
-        console.error('Error deleting client:', error);
-      });
-    },
-    searchClient() {
-      if (this.clientQuery.length > 0) {
-        ClientService.searchClients(this.clientQuery).then(response => {
-          this.clients = response.data;
-        }).catch(error => {
-          this.showNotification(`Error al buscar clientes: ${error.message}`, 'error');
-          console.error('Error searching clients:', error);
+    confirmDeleteBrand() {
+      BrandService.deleteBrand(this.brandToDelete.id)
+        .then(() => {
+          this.fetchBrands();
+          this.deleteDialog = false;
+          this.showNotification('Marca eliminada correctamente', 'success');
+        })
+        .catch(error => {
+          this.deleteDialog = false;
+          this.showNotification(`Error al eliminar la marca: ${error.message}`, 'error');
+          if (error.response && error.response.status === 401) {
+            this.$router.push('/app/sessions/login');
+          } else {
+            console.error('Error deleting brand:', error);
+          }
         });
-      } else {
-        this.fetchClients();
-      }
     },
     showNotification(message, color) {
       this.notification.message = message;
       this.notification.color = color;
       this.notification.visible = true;
-
       setTimeout(() => {
         this.notification.visible = false;
       }, 3000);
+    }
+  },
+  computed: {
+    filteredBrands() {
+      return this.brands.filter(brand => 
+        brand.name.toLowerCase().includes(this.search.toLowerCase())
+      );
     }
   }
 };
 </script>
 
 <style scoped>
-.v-data-table {
-  margin-top: 20px;
+.table-one {
+  width: 100%;
 }
 </style>

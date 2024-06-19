@@ -13,16 +13,32 @@
           <v-row>
             <!-- Cliente y dirección -->
             <v-col cols="12" md="6">
-              <v-select
-                v-model="sale.client"
-                :items="clients"
-                item-text="name"
-                item-value="id"
-                label="Buscar Cliente"
-                outlined
-                dense
-                required
-              ></v-select>
+              <v-row no-gutters>
+                <v-col cols="10">
+                  <v-text-field
+                    v-model="clientQuery"
+                    label="Buscar Cliente (Nombre o DNI)"
+                    outlined
+                    dense
+                    prepend-inner-icon="mdi-magnify"
+                    @input="searchClient"
+                  ></v-text-field>
+                  <v-select
+                    v-if="clients.length > 0"
+                    v-model="sale.client"
+                    :items="clients"
+                    item-text="name"
+                    item-value="id"
+                    label="Seleccione Cliente"
+                    outlined
+                    dense
+                    required
+                  ></v-select>
+                </v-col>
+                <v-col cols="2">
+                  <v-btn color="primary" @click="openAddClientDialog">+</v-btn>
+                </v-col>
+              </v-row>
               <v-text-field
                 v-model="sale.address"
                 label="Dirección"
@@ -148,23 +164,65 @@
         <v-btn color="primary" @click="saveSale">Guardar</v-btn>
       </v-card-actions>
     </v-card>
+
+    <!-- Modal para agregar nuevo cliente -->
+    <v-dialog v-model="addClientDialog" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Agregar Cliente</v-card-title>
+        <v-card-text>
+          <v-form ref="addClientForm">
+            <v-text-field
+              v-model="newClient.name"
+              label="Nombre del Cliente"
+              outlined
+              dense
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="newClient.email"
+              label="Correo Electrónico"
+              outlined
+              dense
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="newClient.phone"
+              label="Teléfono"
+              outlined
+              dense
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="newClient.dni"
+              label="DNI"
+              outlined
+              dense
+              required
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="error" @click="addClientDialog = false">Cancelar</v-btn>
+          <v-btn color="primary" @click="addClient">Guardar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-dialog>
 </template>
 
 <script>
 import ClientService from '../services/client.service';
-import saleService from '../services/sale.service';
+import WarehouseService from '../services/WarehouseService.js';
 // import ProductService from '../services/product.service';
-// import WarehouseService from '../services/warehouse.service';
-// import InvoiceService from '../services/invoice.service';
 // import PaymentMethodService from '../services/payment-method.service';
-
 
 export default {
   props: ['value'],
   data() {
     return {
       dialog: this.value,
+      addClientDialog: false, // Estado del modal de agregar cliente
+      clientQuery: '', // Query para buscar clientes
       sale: {
         client: null,
         address: '',
@@ -181,7 +239,7 @@ export default {
       searchProduct: '',
       clients: [],
       products: [],
-      warehouses: [],
+      warehouses: [],  // Verificamos la carga de almacenes
       paymentMethods: [],
       saleSummary: [
         { label: 'Subtotal', value: 0 },
@@ -197,7 +255,13 @@ export default {
         { text: 'Precio', value: 'price' },
         { text: 'Importe', value: 'amount' },
         { text: 'Acciones', value: 'action', sortable: false }
-      ]
+      ],
+      newClient: { // Datos del nuevo cliente
+        name: '',
+        email: '',
+        phone: '',
+        dni: '' // Añadimos el campo DNI
+      }
     };
   },
   watch: {
@@ -251,9 +315,9 @@ export default {
         this.clients = response.data;
       });
 
-      // WarehouseService.getAllWarehouses().then(response => {
-      //   this.warehouses = response.data;
-      // });
+      WarehouseService.getAllWarehouses().then(response => {  // Aseguramos la carga de los almacenes
+        this.warehouses = response.data;
+      });
 
       // PaymentMethodService.getAllPaymentMethods().then(response => {
       //   this.paymentMethods = response.data;
@@ -262,6 +326,27 @@ export default {
       // ProductService.getAllProducts().then(response => {
       //   this.products = response.data;
       // });
+    },
+    searchClient() {
+      if (this.clientQuery) {
+        ClientService.searchClients(this.clientQuery).then(response => {
+          this.clients = response.data;
+        });
+      } else {
+        this.clients = [];
+      }
+    },
+    openAddClientDialog() {
+      this.addClientDialog = true; // Abre el modal de agregar cliente
+    },
+    addClient() {
+      ClientService.createClient(this.newClient).then(() => {
+        // Actualiza la lista de clientes
+        this.fetchData();
+        this.addClientDialog = false;
+        // Limpiar el formulario de nuevo cliente
+        this.newClient = { name: '', email: '', phone: '', dni: '' };
+      });
     }
   },
   created() {

@@ -145,9 +145,9 @@ export const items = [
         icon: "mdi-circle-medium",
       },
       {
-        title: "Mix",
+        title: "Caja",
 
-        to: "ApexMixChart",
+        to: "IndexCaja",
         icon: "mdi-circle-medium",
       },
       {
@@ -156,36 +156,36 @@ export const items = [
         to: "ApexColumnChart",
         icon: "mdi-circle-medium",
       },
-      {
-        title: "Pie",
+      // {
+      //   title: "Pie",
 
-        to: "ApexPieChart",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Radar",
+      //   to: "ApexPieChart",
+      //   icon: "mdi-circle-medium",
+      // },
+      // {
+      //   title: "Radar",
 
-        to: "ApexRadarChart",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Scatter",
+      //   to: "ApexRadarChart",
+      //   icon: "mdi-circle-medium",
+      // },
+      // {
+      //   title: "Scatter",
 
-        to: "ApexScatterChart",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Sparkline",
+      //   to: "ApexScatterChart",
+      //   icon: "mdi-circle-medium",
+      // },
+      // {
+      //   title: "Sparkline",
 
-        to: "ApexSparklineChart",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Custom",
+      //   to: "ApexSparklineChart",
+      //   icon: "mdi-circle-medium",
+      // },
+      // {
+      //   title: "Custom",
 
-        to: "CustomApexChart",
-        icon: "mdi-circle-medium",
-      },
+      //   to: "CustomApexChart",
+      //   icon: "mdi-circle-medium",
+      // },
     ],
   },
   {
@@ -206,24 +206,24 @@ export const items = [
       },
       {
         title: "Marcas",
-        to: "IndexMarca",
+        to: "IndexBrand",
         icon: "mdi-circle-medium",
       },
       {
-        title: "People",
+        title: "Comprobantes y series",
         to: "AccountPeople",
         icon: "mdi-circle-medium",
       },
-      {
-        title: "Personal Info",
-        to: "AccountPersonalInfo",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Security",
-        to: "AccountSecurity",
-        icon: "mdi-circle-medium",
-      },
+      // {
+      //   title: "Personal Info",
+      //   to: "AccountPersonalInfo",
+      //   icon: "mdi-circle-medium",
+      // },
+      // {
+      //   title: "Security",
+      //   to: "AccountSecurity",
+      //   icon: "mdi-circle-medium",
+      // },
     ],
   },
   {
@@ -248,28 +248,28 @@ export const items = [
       },
     ],
   },
-  // {
-  //   title: "Widgets",
-  //   icon: "mdi-chart-bar-stacked",
-  //   group: "widgets",
-  //   children: [
-  //     {
-  //       title: "General",
-  //       to: "general",
-  //       icon: "mdi-circle-medium",
-  //     },
-  //     {
-  //       title: "widgets Charts",
-  //       to: "widgetsCharts",
-  //       icon: "mdi-circle-medium",
-  //     },
-  //     {
-  //       title: "widgets Table",
-  //       to: "widgetsTable",
-  //       icon: "mdi-circle-medium",
-  //     },
-  //   ],
-  // },
+  {
+    title: "ALMACEN",
+    icon: "mdi-chart-bar-stacked",
+    group: "widgets",
+    children: [
+      {
+        title: "Control almacen",
+        to: "IndexWarehouse",
+        icon: "mdi-circle-medium",
+      },
+      {
+        title: "widgets Charts",
+        to: "widgetsCharts",
+        icon: "mdi-circle-medium",
+      },
+      {
+        title: "widgets Table",
+        to: "widgetsTable",
+        icon: "mdi-circle-medium",
+      },
+    ],
+  },
 
   // {
   //   title: "List",
