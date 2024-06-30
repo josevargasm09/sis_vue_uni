@@ -9,6 +9,7 @@
 <script>
 export default {
   computed: {
+    
     snackbar() {
       return this.$store.getters['notification/snackbar'];
     }

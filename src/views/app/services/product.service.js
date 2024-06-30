@@ -2,7 +2,7 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:8080/api/products';
+const API_URL = 'http://localhost:8080/api/products/';
 
 class ProductService {
   getAllProducts() {
@@ -10,7 +10,7 @@ class ProductService {
   }
 
   getProductById(id) {
-    return axios.get(`${API_URL}/${id}`, { headers: authHeader() });
+    return axios.get(API_URL + id, { headers: authHeader() });
   }
 
   createProduct(product) {
@@ -18,11 +18,11 @@ class ProductService {
   }
 
   updateProduct(id, product) {
-    return axios.put(`${API_URL}/${id}`, product, { headers: authHeader() });
+    return axios.put(API_URL + id, product, { headers: authHeader() });
   }
 
   deleteProduct(id) {
-    return axios.delete(`${API_URL}/${id}`, { headers: authHeader() });
+    return axios.delete(API_URL + id, { headers: authHeader() });
   }
 }
 

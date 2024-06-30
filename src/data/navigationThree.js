@@ -209,9 +209,9 @@ export const items = [
         to: "IndexBrand",
         icon: "mdi-circle-medium",
       },
-      {
+      { 
         title: "Comprobantes y series",
-        to: "AccountPeople",
+        to: "IndexInvoice",
         icon: "mdi-circle-medium",
       },
       // {
@@ -259,8 +259,8 @@ export const items = [
         icon: "mdi-circle-medium",
       },
       {
-        title: "widgets Charts",
-        to: "widgetsCharts",
+        title: "Productos",
+        to: "IndexProduct",
         icon: "mdi-circle-medium",
       },
       {

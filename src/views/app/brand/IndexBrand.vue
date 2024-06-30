@@ -114,6 +114,7 @@ export default {
             this.$router.push('/app/sessions/login');
           } else {
             console.error('Error fetching brands:', error);
+            this.showNotification(`Error al obtener las marcas: ${error.message}`, 'error');
           }
         });
     },

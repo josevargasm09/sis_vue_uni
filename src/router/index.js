@@ -415,9 +415,9 @@ const router = new Router({
               component: () => import("@/views/app/brand/IndexBrand"),
             },
             {
-              path: "AccountPeople",
-              name: "AccountPeople",
-              component: () => import("@/views/app/account/AccountPeople"),
+              path: "IndexInvoice",
+              name: "IndexInvoice", 
+              component: () => import("@/views/app/invoice/IndexInvoice"),
             },
             {
               path: "AccountPersonalInfo",
@@ -470,16 +470,16 @@ const router = new Router({
               component: () => import("@/views/app/warehouse/IndexWarehouse"),
             },
             {
-              path: "widgetsCharts",
-              name: "widgetsCharts",
+              path: "IndexProduct", 
+              name: "IndexProduct",
               meta: {
-                breadcrumb: [
-                  { name: "pages" },
-                  { name: "Widgets" },
-                  { name: "widgetsCharts" },
-                ],
+                // breadcrumb: [
+                //   { name: "pages" },
+                //   { name: "Widgets" },
+                //   { name: "widgetsCharts" },
+                // ],
               },
-              component: () => import("@/views/app/widgets/WidgetCharts"),
+              component: () => import("@/views/app/product/IndexProduct"),
             },
             {
               path: "widgetsTable",
@@ -661,48 +661,48 @@ const router = new Router({
             },
           ],
         },
-        {
-          path: "/app/invoice",
-          component: () => import("@/views/app/invoice/Invoice"),
-          children: [
-            {
-              path: "invoice-ver-one",
-              name: "invoice-ver-one",
-              meta: {
-                breadcrumb: [
-                  { name: "pages" },
-                  { name: "Invoice" },
-                  { name: "Invoice ver 1" },
-                ],
-              },
-              component: () => import("@/views/app/invoice/InvoiceVerOne"),
-            },
-            {
-              path: "invoice-ver-two",
-              name: "invoice-ver-two",
-              meta: {
-                breadcrumb: [
-                  { name: "pages" },
-                  { name: "Account" },
-                  { name: "Invoice ver 2" },
-                ],
-              },
-              component: () => import("@/views/app/invoice/InvoiceVerTwo"),
-            },
-            {
-              path: "edit-invoice",
-              name: "edit-invoice",
-              meta: {
-                breadcrumb: [
-                  { name: "pages" },
-                  { name: "Account" },
-                  { name: "Edit Invoice" },
-                ],
-              },
-              component: () => import("@/views/app/invoice/EditInvoice"),
-            },
-          ],
-        },
+        // {
+        //   path: "/app/invoice",
+        //   component: () => import("@/views/app/invoice/Invoice"),
+        //   children: [
+        //     {
+        //       path: "invoice-ver-one",
+        //       name: "invoice-ver-one",
+        //       meta: {
+        //         breadcrumb: [
+        //           { name: "pages" },
+        //           { name: "Invoice" },
+        //           { name: "Invoice ver 1" },
+        //         ],
+        //       },
+        //       component: () => import("@/views/app/invoice/InvoiceVerOne"),
+        //     },
+        //     {
+        //       path: "invoice-ver-two",
+        //       name: "invoice-ver-two",
+        //       meta: {
+        //         breadcrumb: [
+        //           { name: "pages" },
+        //           { name: "Account" },
+        //           { name: "Invoice ver 2" },
+        //         ],
+        //       },
+        //       component: () => import("@/views/app/invoice/InvoiceVerTwo"),
+        //     },
+        //     {
+        //       path: "edit-invoice",
+        //       name: "edit-invoice",
+        //       meta: {
+        //         breadcrumb: [
+        //           { name: "pages" },
+        //           { name: "Account" },
+        //           { name: "Edit Invoice" },
+        //         ],
+        //       },
+        //       component: () => import("@/views/app/invoice/EditInvoice"),
+        //     },
+        //   ],
+        // },
         {
           path: "/app/pages",
           component: () => import("@/views/app/pages/Pages"),
@@ -728,51 +728,51 @@ const router = new Router({
               ],
             },
 
-            {
-              path: "/app/pages/invoice",
-              component: () => import("@/views/app/pages/invoice/Invoice"),
-              children: [
-                {
-                  path: "invoice-ver-one",
-                  name: "invoice-ver-one",
-                  meta: {
-                    breadcrumb: [
-                      { name: "pages" },
-                      { name: "Invoice" },
-                      { name: "Invoice ver 1" },
-                    ],
-                  },
-                  component: () =>
-                    import("@/views/app/pages/invoice/InvoiceVerOne"),
-                },
-                {
-                  path: "invoice-ver-two",
-                  name: "invoice-ver-two",
-                  meta: {
-                    breadcrumb: [
-                      { name: "pages" },
-                      { name: "Account" },
-                      { name: "Invoice ver 2" },
-                    ],
-                  },
-                  component: () =>
-                    import("@/views/app/pages/invoice/InvoiceVerTwo"),
-                },
-                {
-                  path: "edit-invoice",
-                  name: "edit-invoice",
-                  meta: {
-                    breadcrumb: [
-                      { name: "pages" },
-                      { name: "Account" },
-                      { name: "Edit Invoice" },
-                    ],
-                  },
-                  component: () =>
-                    import("@/views/app/pages/invoice/EditInvoice"),
-                },
-              ],
-            },
+            // {
+            //   path: "/app/pages/invoice",
+            //   component: () => import("@/views/app/pages/invoice/Invoice"),
+            //   children: [
+            //     {
+            //       path: "invoice-ver-one",
+            //       name: "invoice-ver-one",
+            //       meta: {
+            //         breadcrumb: [
+            //           { name: "pages" },
+            //           { name: "Invoice" },
+            //           { name: "Invoice ver 1" },
+            //         ],
+            //       },
+            //       component: () =>
+            //         import("@/views/app/pages/invoice/InvoiceVerOne"),
+            //     },
+            //     // {
+            //     //   path: "invoice-ver-two",
+            //     //   name: "invoice-ver-two",
+            //     //   meta: {
+            //     //     breadcrumb: [
+            //     //       { name: "pages" },
+            //     //       { name: "Account" },
+            //     //       { name: "Invoice ver 2" },
+            //     //     ],
+            //     //   },
+            //     //   component: () =>
+            //     //     import("@/views/app/pages/invoice/InvoiceVerTwo"),
+            //     // },
+            //     // {
+            //     //   path: "edit-invoice",
+            //     //   name: "edit-invoice",
+            //     //   meta: {
+            //     //     breadcrumb: [
+            //     //       { name: "pages" },
+            //     //       { name: "Account" },
+            //     //       { name: "Edit Invoice" },
+            //     //     ],
+            //     //   },
+            //     //   component: () =>
+            //     //     import("@/views/app/pages/invoice/EditInvoice"),
+            //     // },
+            //   ],
+            // },
           ],
         },
         {
