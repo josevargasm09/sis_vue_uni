@@ -13,32 +13,16 @@
           <v-row>
             <!-- Cliente y dirección -->
             <v-col cols="12" md="6">
-              <v-row no-gutters>
-                <v-col cols="10">
-                  <v-text-field
-                    v-model="clientQuery"
-                    label="Buscar Cliente (Nombre o DNI)"
-                    outlined
-                    dense
-                    prepend-inner-icon="mdi-magnify"
-                    @input="searchClient"
-                  ></v-text-field>
-                  <v-select
-                    v-if="clients.length > 0"
-                    v-model="sale.client"
-                    :items="clients"
-                    item-text="name"
-                    item-value="id"
-                    label="Seleccione Cliente"
-                    outlined
-                    dense
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col cols="2">
-                  <v-btn color="primary" @click="openAddClientDialog">+</v-btn>
-                </v-col>
-              </v-row>
+              <v-autocomplete
+                v-model="sale.client_id"
+                :items="clients"
+                item-text="name"
+                item-value="id"
+                label="Buscar Cliente (Nombre o DNI)"
+                outlined
+                dense
+                @change="onClientSelected"
+              ></v-autocomplete>
               <v-text-field
                 v-model="sale.address"
                 label="Dirección"
@@ -50,12 +34,12 @@
             <!-- Fecha y observaciones -->
             <v-col cols="12" md="6">
               <v-text-field
-                v-model="sale.date"
+                v-model="sale.sale_date"
                 label="Fecha Venta"
                 outlined
                 dense
                 required
-                :type="'date'"
+                type="date"
               ></v-text-field>
               <v-text-field
                 v-model="sale.notes"
@@ -68,7 +52,7 @@
             <!-- Almacén y búsqueda de productos -->
             <v-col cols="12" md="6">
               <v-select
-                v-model="sale.warehouse"
+                v-model="sale.warehouse_id"
                 :items="warehouses"
                 item-text="name"
                 item-value="id"
@@ -77,43 +61,60 @@
                 dense
                 required
               ></v-select>
-              <v-text-field
+              <v-autocomplete
                 v-model="searchProduct"
+                :items="products"
+                item-text="name"
+                item-value="id"
                 label="Escriba el nombre del producto o código para buscar"
                 outlined
                 dense
-                prepend-inner-icon="mdi-magnify"
-                @click:append="addProduct"
-              ></v-text-field>
+                @change="onProductSelected"
+              ></v-autocomplete>
             </v-col>
           </v-row>
 
           <!-- Lista de productos agregados -->
           <v-data-table
             :headers="productHeaders"
-            :items="sale.products"
+            :items="sale.items"
             class="elevation-1"
             dense
           >
-            <template v-slot:item.action="{ item }">
+            <template v-slot:item.quantity="{ item }">
+              <v-text-field
+                v-model="item.quantity"
+                type="number"
+                @input="updateAmount(item)"
+                outlined
+                dense
+              ></v-text-field>
+            </template>
+            <template v-slot:item.amount="{ item }">
+              <span>{{ item.amount }}</span>
+            </template>
+            <template v-slot:item.actions="{ item }">
               <v-btn icon @click="removeProduct(item)">
                 <v-icon color="red">mdi-delete</v-icon>
               </v-btn>
             </template>
           </v-data-table>
 
-          <!-- Resumen de la venta -->
+          <!-- Resumen de totales -->
           <v-row class="mt-4">
             <v-col cols="12" md="4">
-              <v-text-field
-                v-model="sale.invoiceType"
+              <v-select
+                v-model="sale.invoice_id"
+                :items="invoices"
+                item-text="type"
+                item-value="id"
                 label="Comprobante"
                 outlined
                 dense
                 required
-              ></v-text-field>
+              ></v-select>
             </v-col>
-            <v-col cols="6" md="2">
+            <v-col cols="6" md="4">
               <v-text-field
                 v-model="sale.series"
                 label="Serie"
@@ -122,7 +123,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="6" md="2">
+            <v-col cols="6" md="4">
               <v-text-field
                 v-model="sale.invoiceNumber"
                 label="Nro."
@@ -133,7 +134,7 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-select
-                v-model="sale.paymentMethod"
+                v-model="sale.payment_method_id"
                 :items="paymentMethods"
                 item-text="name"
                 item-value="id"
@@ -212,34 +213,35 @@
 
 <script>
 import ClientService from '../services/client.service';
-import WarehouseService from '../services/WarehouseService.js';
-// import ProductService from '../services/product.service';
-// import PaymentMethodService from '../services/payment-method.service';
+import WarehouseService from '../services/WarehouseService';
+import ProductService from '../services/product.service';
+import SaleService from '../services/sale.service';
+import InvoiceService from '../services/invoice.service';
+import PaymentMethodService from '../services/payment-method.service';
 
 export default {
   props: ['value'],
   data() {
     return {
       dialog: this.value,
-      addClientDialog: false, // Estado del modal de agregar cliente
-      clientQuery: '', // Query para buscar clientes
-      sale: {
-        client: null,
-        address: '',
-        date: '',
-        notes: '',
-        warehouse: null,
-        products: [],
-        invoiceType: '',
-        series: '',
-        invoiceNumber: '',
-        paymentMethod: null,
-        total: 0
-      },
+      addClientDialog: false,
       searchProduct: '',
+      sale: {
+        client_id: '',
+        address: '',
+        sale_date: '',
+        notes: '',
+        warehouse_id: null,
+        items: [],
+        invoice_id: null,
+        payment_method_id: null,
+        discount: 0,
+        totalAmount: 0
+      },
       clients: [],
       products: [],
-      warehouses: [],  // Verificamos la carga de almacenes
+      warehouses: [],
+      invoices: [],
       paymentMethods: [],
       saleSummary: [
         { label: 'Subtotal', value: 0 },
@@ -248,19 +250,18 @@ export default {
         { label: 'Total', value: 0 }
       ],
       productHeaders: [
-        { text: '#', value: 'id' },
+        { text: '#', value: 'product_id' },
         { text: 'Producto', value: 'name' },
-        { text: 'Unidad', value: 'unit' },
         { text: 'Cantidad', value: 'quantity' },
         { text: 'Precio', value: 'price' },
         { text: 'Importe', value: 'amount' },
-        { text: 'Acciones', value: 'action', sortable: false }
+        { text: 'Acciones', value: 'actions', sortable: false }
       ],
-      newClient: { // Datos del nuevo cliente
+      newClient: {
         name: '',
         email: '',
         phone: '',
-        dni: '' // Añadimos el campo DNI
+        dni: ''
       }
     };
   },
@@ -278,54 +279,85 @@ export default {
       this.$emit('close');
     },
     saveSale() {
-      // Aquí se manejaría el guardado de la venta
-      console.log('Guardando venta:', this.sale);
-      this.closeDialog();
+      if (!this.sale.client_id || !this.sale.warehouse_id || !this.sale.invoice_id || !this.sale.payment_method_id) {
+        this.$store.dispatch('notification/showSnackbar', {
+          message: 'Por favor complete todos los campos',
+          color: 'error'
+        });
+        return;
+      }
+      SaleService.createSale(this.sale)
+        .then(() => {
+          this.$emit('saleSaved');
+          this.closeDialog();
+          this.$store.dispatch('notification/showSnackbar', {
+            message: 'Venta registrada correctamente',
+            color: 'success'
+          });
+        })
+        .catch(error => {
+          console.error('Error al guardar la venta:', error);
+          this.$store.dispatch('notification/showSnackbar', {
+            message: `Error al guardar la venta: ${error.message}`,
+            color: 'error'
+          });
+        });
     },
     addProduct() {
-      // Lógica para agregar un producto a la lista
-      if (this.searchProduct) {
-        let product = {
-          id: Date.now(),
-          name: this.searchProduct,
-          unit: 'Unidad',
-          quantity: 1,
-          price: 100,
-          amount: 100
-        };
-        this.sale.products.push(product);
+      const selectedProduct = this.products.find(product => product.id === this.searchProduct);
+      if (selectedProduct) {
+        const productInSale = this.sale.items.find(p => p.product_id === selectedProduct.id);
+        if (productInSale) {
+          productInSale.quantity += 1;
+          productInSale.amount = productInSale.quantity * selectedProduct.price;
+        } else {
+          this.sale.items.push({ 
+            product_id: selectedProduct.id, 
+            name: selectedProduct.name,
+            quantity: 1, 
+            price: selectedProduct.price, 
+            amount: selectedProduct.price 
+          });
+        }
         this.calculateSummary();
         this.searchProduct = '';
       }
     },
     removeProduct(item) {
-      this.sale.products = this.sale.products.filter(p => p.id !== item.id);
+      this.sale.items = this.sale.items.filter(p => p.product_id !== item.product_id);
       this.calculateSummary();
+    },
+    updateAmount(item) {
+      const product = this.products.find(p => p.id === item.product_id);
+      if (product) {
+        item.amount = item.quantity * product.price;
+        this.calculateSummary();
+      }
     },
     calculateSummary() {
       let subtotal = 0;
-      this.sale.products.forEach(product => {
+      this.sale.items.forEach(product => {
         subtotal += product.amount;
       });
       this.saleSummary[0].value = subtotal;
-      this.saleSummary[3].value = subtotal; // Total
+      this.saleSummary[3].value = subtotal - this.saleSummary[1].value + this.saleSummary[2].value; // Total
     },
     fetchData() {
       ClientService.getAllClients().then(response => {
         this.clients = response.data;
       });
-
-      WarehouseService.getAllWarehouses().then(response => {  // Aseguramos la carga de los almacenes
+      WarehouseService.getAllWarehouses().then(response => {
         this.warehouses = response.data;
       });
-
-      // PaymentMethodService.getAllPaymentMethods().then(response => {
-      //   this.paymentMethods = response.data;
-      // });
-
-      // ProductService.getAllProducts().then(response => {
-      //   this.products = response.data;
-      // });
+      ProductService.getAllProducts().then(response => {
+        this.products = response.data;
+      });
+      InvoiceService.getAllInvoices().then(response => {
+        this.invoices = response.data;
+      });
+      PaymentMethodService.getAllPaymentMethods().then(response => {
+        this.paymentMethods = response.data;
+      });
     },
     searchClient() {
       if (this.clientQuery) {
@@ -336,16 +368,30 @@ export default {
         this.clients = [];
       }
     },
-    openAddClientDialog() {
-      this.addClientDialog = true; // Abre el modal de agregar cliente
+    onClientSelected(client_id) {
+      const selectedClient = this.clients.find(client => client.id === client_id);
+      if (selectedClient) {
+        this.sale.address = selectedClient.address;
+      }
+    },
+    onProductSelected(product_id) {
+      this.addProduct();
     },
     addClient() {
       ClientService.createClient(this.newClient).then(() => {
-        // Actualiza la lista de clientes
         this.fetchData();
         this.addClientDialog = false;
-        // Limpiar el formulario de nuevo cliente
         this.newClient = { name: '', email: '', phone: '', dni: '' };
+        this.$store.dispatch('notification/showSnackbar', {
+          message: 'Cliente agregado correctamente',
+          color: 'success'
+        });
+      }).catch(error => {
+        console.error('Error al agregar el cliente:', error);
+        this.$store.dispatch('notification/showSnackbar', {
+          message: `Error al agregar el cliente: ${error.message}`,
+          color: 'error'
+        });
       });
     }
   },
@@ -356,7 +402,7 @@ export default {
 </script>
 
 <style scoped>
-.black-border {
-  border: 1px solid black;
+.headline {
+  font-weight: bold;
 }
 </style>
