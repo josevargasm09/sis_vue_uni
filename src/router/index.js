@@ -169,24 +169,24 @@ const router = new Router({
         },
         // sessions
         {
-          path: "/app/apps",
-          component: () => import("@/views/app/apps/Index"),
+          path: "/app/purchase",
+          component: () => import("@/views/app/purchase/Index.vue"),
           children: [
             {
-              path: "chat",
-              name: "chat",
-              component: () => import("@/views/app/apps/Chat"),
-              meta: {
-                breadcrumb: [{ name: "Apps" }, { name: "Chat" }],
-              },
+              path: "IndexPurchase",
+              name: "IndexPurchase",
+              component: () => import("@/views/app/purchase/IndexPurchase"),
+              // meta: {
+              //   breadcrumb: [{ name: "Apps" }, { name: "Chat" }],
+              // },
             },
             {
-              path: "file-manager",
-              name: "file-manager",
-              meta: {
-                breadcrumb: [{ name: "Apps" }, { name: "File Manager" }],
-              },
-              component: () => import("@/views/app/apps/FileManager"),
+              path: "IndexSupplier",
+              name: "IndexSupplier",
+              // meta: {
+              //   breadcrumb: [{ name: "Apps" }, { name: "File Manager" }],
+              // },
+              component: () => import("@/views/app/supplier/IndexSupplier"),
             },
             {
               path: "note",

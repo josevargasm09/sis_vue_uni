@@ -44,36 +44,36 @@ export const items = [
     divider: "Modulos",
     children: [
       {
-        title: "Chat",
+        title: "Compras",
         // icon: "mdi-view-dashboard",
 
-        to: "chat",
+        to: "IndexPurchase",
         icon: "mdi-circle-medium",
       },
       {
-        title: "File Manager",
-        icon: "mdi-circle-medium",
-        to: "file-manager",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Note",
-        icon: "mdi-circle-medium",
-        to: "note",
+        title: "Proveedores",
+        icon: "mdi-circle-medium", 
+        to: "IndexSupplier",
         icon: "mdi-circle-medium",
       },
-      {
-        title: "Scrumboard",
-        icon: "mdi-circle-medium",
-        to: "scrumboard",
-        icon: "mdi-circle-medium",
-      },
-      {
-        title: "Todo",
-        icon: "mdi-circle-medium",
-        to: "todo",
-        icon: "mdi-circle-medium",
-      },
+      // {
+      //   title: "Note",
+      //   icon: "mdi-circle-medium",
+      //   to: "note",
+      //   icon: "mdi-circle-medium",
+      // },
+      // {
+      //   title: "Scrumboard",
+      //   icon: "mdi-circle-medium",
+      //   to: "scrumboard",
+      //   icon: "mdi-circle-medium",
+      // },
+      // {
+      //   title: "Todo",
+      //   icon: "mdi-circle-medium",
+      //   to: "todo",
+      //   icon: "mdi-circle-medium",
+      // },
     ],
   },
 
