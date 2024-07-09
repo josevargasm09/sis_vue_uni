@@ -232,18 +232,18 @@ export const items = [
     group: "faq",
     children: [
       {
-        title: "Faq One",
-        to: "FaqOne",
+        title: "Reporte ventas",
+        to: "IndexSalesReport",
         icon: "mdi-circle-medium",
       },
       {
-        title: "Faq Two",
-        to: "FaqTwo",
+        title: "Reporte compras",
+        to: "IndexReportPurchase",
         icon: "mdi-circle-medium",
       },
       {
-        title: "Faq Three",
-        to: "FaqThree",
+        title: "Reportes Clientes",
+        to: "IndexClientReport",
         icon: "mdi-circle-medium",
       },
     ],

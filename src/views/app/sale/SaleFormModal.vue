@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="1200px" persistent>
     <v-card>
       <v-card-title class="headline grey lighten-2">
-        Registrar Venta
+        {{ localSale.id ? 'Editar Venta' : 'Registrar Venta' }}
         <v-spacer></v-spacer>
         <v-btn icon @click="closeDialog">
           <v-icon>mdi-close</v-icon>
@@ -14,7 +14,7 @@
             <!-- Cliente y dirección -->
             <v-col cols="12" md="6">
               <v-autocomplete
-                v-model="sale.client_id"
+                v-model="localSale.client_id"
                 :items="clients"
                 item-text="name"
                 item-value="id"
@@ -24,7 +24,7 @@
                 @change="onClientSelected"
               ></v-autocomplete>
               <v-text-field
-                v-model="sale.address"
+                v-model="localSale.address"
                 label="Dirección"
                 outlined
                 dense
@@ -34,7 +34,7 @@
             <!-- Fecha y observaciones -->
             <v-col cols="12" md="6">
               <v-text-field
-                v-model="sale.sale_date"
+                v-model="localSale.sale_date"
                 label="Fecha Venta"
                 outlined
                 dense
@@ -42,7 +42,7 @@
                 type="date"
               ></v-text-field>
               <v-text-field
-                v-model="sale.notes"
+                v-model="localSale.notes"
                 label="Observaciones"
                 outlined
                 dense
@@ -52,7 +52,7 @@
             <!-- Almacén y búsqueda de productos -->
             <v-col cols="12" md="6">
               <v-select
-                v-model="sale.warehouse_id"
+                v-model="localSale.warehouse_id"
                 :items="warehouses"
                 item-text="name"
                 item-value="id"
@@ -77,7 +77,7 @@
           <!-- Lista de productos agregados -->
           <v-data-table
             :headers="productHeaders"
-            :items="sale.items"
+            :items="localSale.items"
             class="elevation-1"
             dense
           >
@@ -104,7 +104,7 @@
           <v-row class="mt-4">
             <v-col cols="12" md="4">
               <v-select
-                v-model="sale.invoice_id"
+                v-model="localSale.invoice_id"
                 :items="invoices"
                 item-text="type"
                 item-value="id"
@@ -116,7 +116,7 @@
             </v-col>
             <v-col cols="6" md="4">
               <v-text-field
-                v-model="sale.series"
+                v-model="localSale.series"
                 label="Serie"
                 outlined
                 dense
@@ -125,7 +125,7 @@
             </v-col>
             <v-col cols="6" md="4">
               <v-text-field
-                v-model="sale.invoiceNumber"
+                v-model="localSale.invoiceNumber"
                 label="Nro."
                 outlined
                 dense
@@ -134,7 +134,7 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-select
-                v-model="sale.payment_method_id"
+                v-model="localSale.payment_method_id"
                 :items="paymentMethods"
                 item-text="name"
                 item-value="id"
@@ -162,7 +162,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn color="error" @click="closeDialog">Cancelar</v-btn>
-        <v-btn color="primary" @click="saveSale">Guardar</v-btn>
+        <v-btn color="primary" @click="saveSale">{{ localSale.id ? 'Actualizar' : 'Guardar' }}</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -220,13 +220,13 @@ import InvoiceService from '../services/invoice.service';
 import PaymentMethodService from '../services/payment-method.service';
 
 export default {
-  props: ['value'],
+  props: ['value', 'sale'],
   data() {
     return {
       dialog: this.value,
       addClientDialog: false,
       searchProduct: '',
-      sale: {
+      localSale: this.sale ? { ...this.sale } : {
         client_id: '',
         address: '',
         sale_date: '',
@@ -271,6 +271,15 @@ export default {
     },
     dialog(val) {
       this.$emit('input', val);
+    },
+    sale: {
+      immediate: true,
+      handler(newSale) {
+        if (newSale) {
+          this.localSale = { ...newSale };
+          this.calculateSummary();
+        }
+      }
     }
   },
   methods: {
@@ -279,19 +288,20 @@ export default {
       this.$emit('close');
     },
     saveSale() {
-      if (!this.sale.client_id || !this.sale.warehouse_id || !this.sale.invoice_id || !this.sale.payment_method_id) {
+      if (!this.localSale.client_id || !this.localSale.warehouse_id || !this.localSale.invoice_id || !this.localSale.payment_method_id) {
         this.$store.dispatch('notification/showSnackbar', {
           message: 'Por favor complete todos los campos',
           color: 'error'
         });
         return;
       }
-      SaleService.createSale(this.sale)
+      const saveMethod = this.localSale.id ? SaleService.updateSale : SaleService.createSale;
+      saveMethod(this.localSale)
         .then(() => {
           this.$emit('saleSaved');
           this.closeDialog();
           this.$store.dispatch('notification/showSnackbar', {
-            message: 'Venta registrada correctamente',
+            message: this.localSale.id ? 'Venta actualizada correctamente' : 'Venta registrada correctamente',
             color: 'success'
           });
         })
@@ -306,17 +316,17 @@ export default {
     addProduct() {
       const selectedProduct = this.products.find(product => product.id === this.searchProduct);
       if (selectedProduct) {
-        const productInSale = this.sale.items.find(p => p.product_id === selectedProduct.id);
+        const productInSale = this.localSale.items.find(p => p.product_id === selectedProduct.id);
         if (productInSale) {
           productInSale.quantity += 1;
           productInSale.amount = productInSale.quantity * selectedProduct.price;
         } else {
-          this.sale.items.push({ 
-            product_id: selectedProduct.id, 
+          this.localSale.items.push({
+            product_id: selectedProduct.id,
             name: selectedProduct.name,
-            quantity: 1, 
-            price: selectedProduct.price, 
-            amount: selectedProduct.price 
+            quantity: 1,
+            price: selectedProduct.price,
+            amount: selectedProduct.price
           });
         }
         this.calculateSummary();
@@ -324,7 +334,7 @@ export default {
       }
     },
     removeProduct(item) {
-      this.sale.items = this.sale.items.filter(p => p.product_id !== item.product_id);
+      this.localSale.items = this.localSale.items.filter(p => p.product_id !== item.product_id);
       this.calculateSummary();
     },
     updateAmount(item) {
@@ -336,7 +346,7 @@ export default {
     },
     calculateSummary() {
       let subtotal = 0;
-      this.sale.items.forEach(product => {
+      this.localSale.items.forEach(product => {
         subtotal += product.amount;
       });
       this.saleSummary[0].value = subtotal;
@@ -371,7 +381,7 @@ export default {
     onClientSelected(client_id) {
       const selectedClient = this.clients.find(client => client.id === client_id);
       if (selectedClient) {
-        this.sale.address = selectedClient.address;
+        this.localSale.address = selectedClient.address;
       }
     },
     onProductSelected(product_id) {
@@ -393,6 +403,21 @@ export default {
           color: 'error'
         });
       });
+    },
+    open(sale = null) {
+      this.localSale = sale ? { ...sale } : {
+        client_id: '',
+        address: '',
+        sale_date: '',
+        notes: '',
+        warehouse_id: null,
+        items: [],
+        invoice_id: null,
+        payment_method_id: null,
+        discount: 0,
+        totalAmount: 0
+      };
+      this.dialog = true;
     }
   },
   created() {

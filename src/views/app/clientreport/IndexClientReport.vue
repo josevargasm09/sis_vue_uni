@@ -4,26 +4,26 @@
       <v-col>
         <v-card>
           <v-card-title>
-            Ventas
+            Reporte de Clientes
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="openCreateDialog">Registrar Venta</v-btn>
+            <v-btn color="primary" @click="openCreateDialog">Agregar Reporte</v-btn>
           </v-card-title>
           <v-card-text>
             <v-text-field
-              v-model="saleQuery"
-              label="Buscar Venta (Cliente, Fecha)"
+              v-model="reportQuery"
+              label="Buscar Reporte (Fecha)"
               outlined
               dense
               prepend-inner-icon="mdi-magnify"
-              @input="searchSale"
+              @input="searchReport"
             ></v-text-field>
             <v-data-table
               :headers="headers"
-              :items="sales"
+              :items="reports"
               item-key="id"
               class="elevation-1"
             >
-              <template v-slot:item.actions="{ item }">
+              <template v-slot:item.action="{ item }">
                 <div class="d-flex">
                   <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
@@ -48,21 +48,21 @@
         </v-card>
       </v-col>
     </v-row>
-    <sale-form-modal ref="saleFormModal" @saleSaved="fetchSales"></sale-form-modal>
+    <ClientReportFormModal ref="reportFormModal" @updateList="fetchReports" />
     <!-- Confirm Delete Modal -->
     <v-dialog v-model="deleteDialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Confirmar Eliminación</v-card-title>
-        <v-card-text>¿Estás seguro de que deseas eliminar esta venta?</v-card-text>
+        <v-card-text>¿Estás seguro de que deseas eliminar este reporte?</v-card-text>
         <v-card-actions>
           <v-btn color="error" @click="deleteDialog = false">Cancelar</v-btn>
-          <v-btn color="primary" @click="confirmDeleteSale">Eliminar</v-btn>
+          <v-btn color="primary" @click="confirmDeleteReport">Eliminar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <!-- Notification Snackbar -->
-    <notification-snackbar
+    <NotificationSnackbar
       :message="notification.message"
       :color="notification.color"
       v-if="notification.visible"
@@ -71,27 +71,27 @@
 </template>
 
 <script>
-import SaleService from '../services/sale.service';
-import SaleFormModal from './SaleFormModal.vue';
+import ClientReportService from '../services/client-report.service.js';
+import ClientReportFormModal from './ClientReportFormModal.vue';
 import NotificationSnackbar from '../../../components/NotificationSnackbar.vue';
 
 export default {
   components: {
-    SaleFormModal,
+    ClientReportFormModal,
     NotificationSnackbar
   },
   data() {
     return {
-      saleQuery: '',
-      sales: [],
+      reportQuery: '',
+      reports: [],
       headers: [
-        { text: 'Cliente', value: 'client.name' },
-        { text: 'Fecha', value: 'saleDate' },
-        { text: 'Total', value: 'totalAmount' },
-        { text: 'Acciones', value: 'actions', sortable: false }
+        { text: 'ID', value: 'id' },
+        { text: 'Fecha', value: 'reportDate' },
+        { text: 'Clientes Totales', value: 'totalClients' },
+        { text: 'Acciones', value: 'action', sortable: false }
       ],
       deleteDialog: false,
-      saleToDelete: null,
+      reportToDelete: null,
       notification: {
         visible: false,
         message: '',
@@ -100,48 +100,48 @@ export default {
     };
   },
   created() {
-    this.fetchSales();
+    this.fetchReports();
   },
   methods: {
-    fetchSales() {
-      SaleService.getAllSales().then(response => {
-        this.sales = response.data;
+    fetchReports() {
+      ClientReportService.getAllReports().then(response => {
+        this.reports = response.data;
       }).catch(error => {
-        this.showNotification(`Error al obtener ventas: ${error.message}`, 'error');
-        console.error('Error fetching sales:', error);
+        this.showNotification(`Error al obtener reportes: ${error.message}`, 'error');
+        console.error('Error fetching reports:', error);
       });
     },
     openCreateDialog() {
-      this.$refs.saleFormModal.open();
+      this.$refs.reportFormModal.open();
     },
-    openEditDialog(sale) {
-      this.$refs.saleFormModal.open(sale);
+    openEditDialog(report) {
+      this.$refs.reportFormModal.open(report);
     },
-    openDeleteDialog(sale) {
-      this.saleToDelete = sale;
+    openDeleteDialog(report) {
+      this.reportToDelete = report;
       this.deleteDialog = true;
     },
-    confirmDeleteSale() {
-      SaleService.deleteSale(this.saleToDelete.id).then(() => {
-        this.fetchSales();
+    confirmDeleteReport() {
+      ClientReportService.deleteReport(this.reportToDelete.id).then(() => {
+        this.fetchReports();
         this.deleteDialog = false;
-        this.showNotification('Venta eliminada correctamente', 'success');
+        this.showNotification('Reporte eliminado correctamente', 'success');
       }).catch(error => {
         this.deleteDialog = false;
-        this.showNotification(`Error al eliminar venta: ${error.message}`, 'error');
-        console.error('Error deleting sale:', error);
+        this.showNotification(`Error al eliminar reporte: ${error.message}`, 'error');
+        console.error('Error deleting report:', error);
       });
     },
-    searchSale() {
-      if (this.saleQuery.length > 0) {
-        SaleService.searchSales(this.saleQuery).then(response => {
-          this.sales = response.data;
+    searchReport() {
+      if (this.reportQuery.length > 0) {
+        ClientReportService.searchReports(this.reportQuery).then(response => {
+          this.reports = response.data;
         }).catch(error => {
-          this.showNotification(`Error al buscar ventas: ${error.message}`, 'error');
-          console.error('Error searching sales:', error);
+          this.showNotification(`Error al buscar reportes: ${error.message}`, 'error');
+          console.error('Error searching reports:', error);
         });
       } else {
-        this.fetchSales();
+        this.fetchReports();
       }
     },
     showNotification(message, color) {
