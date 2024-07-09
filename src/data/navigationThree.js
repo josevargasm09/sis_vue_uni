@@ -94,12 +94,12 @@ export const items = [
         to: "IndexRole",
         icon: "mdi-circle-medium",
       },
-      {
-        title: "Table Ver Three",
+      // {
+      //   title: "Table Ver Three",
 
-        to: "tableThree",
-        icon: "mdi-circle-medium",
-      },
+      //   to: "tableThree",
+      //   icon: "mdi-circle-medium",
+      // },
     ],
   },
   // { 
@@ -150,12 +150,12 @@ export const items = [
         to: "IndexCaja",
         icon: "mdi-circle-medium",
       },
-      {
-        title: "Column",
+      // {
+      //   title: "Column",
 
-        to: "ApexColumnChart",
-        icon: "mdi-circle-medium",
-      },
+      //   to: "ApexColumnChart",
+      //   icon: "mdi-circle-medium",
+      // },
       // {
       //   title: "Pie",
 
@@ -263,11 +263,11 @@ export const items = [
         to: "IndexProduct",
         icon: "mdi-circle-medium",
       },
-      {
-        title: "widgets Table",
-        to: "widgetsTable",
-        icon: "mdi-circle-medium",
-      },
+      // {
+      //   title: "widgets Table",
+      //   to: "widgetsTable",
+      //   icon: "mdi-circle-medium",
+      // },
     ],
   },
 
